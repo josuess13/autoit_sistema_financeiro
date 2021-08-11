@@ -1,31 +1,36 @@
-#include <GUIConstants.au3>
+#include <GUIConstantsEx.au3>
+#include <WindowsConstants.au3>
 
-Global $hMain = GUICreate("Example", 600, 400, -1, -1, BitOR($WS_MAXIMIZEBOX, $WS_MINIMIZEBOX, $WS_SIZEBOX))
-Global $btnFullScreen = GUICtrlCreateButton("Fullscreen", 10, 10, 100, 20)
-Global $aGuiStyle = GUIGetStyle($hMain) ; Save the default styles
+Example()
 
-GUISetState(@SW_SHOW, $hMain)
+Func Example()
+    Local $sFilePath = "..\GUI\logo_autoit_210x72.gif"
 
-While (True)
-    Switch (GUIGetMsg())
-        Case $GUI_EVENT_CLOSE
-            Exit 0
-        Case $btnFullScreen
-            Fullscreen()
-    EndSwitch
-WEnd
+    ; Create a GUI with various controls.
+    Local $hGUI = GUICreate("Example", 400, 100)
+    GUICtrlCreatePic("..\GUI\msoobe.jpg", 0, 0, 400, 100)
 
-Func Fullscreen()
-    Local Static $bFullScreen = False
+    ; Display the GUI.
+    GUISetState(@SW_SHOW, $hGUI)
 
-    $bFullScreen = Not $bFullScreen
+    Local $hChild = GUICreate("", 210, 72, 20, 15, $WS_POPUP, BitOR($WS_EX_LAYERED, $WS_EX_MDICHILD), $hGUI)
 
-    Switch ($bFullScreen)
-        Case True
-            GUISetStyle($WS_POPUP, -1, $hMain)
-            WinMove($hMain, "", 0, 0, @DesktopWidth, @DesktopHeight)
-        Case False
-            GUISetStyle($aGuiStyle[0], -1, $hMain)
-            WinMove($hMain, "", 0, 0, 600, 400)
-    EndSwitch
-EndFunc
+    ; Create a picture control with a transparent image.
+    GUICtrlCreatePic($sFilePath, 0, 0, 210, 72)
+
+    ; Display the child GUI.
+    GUISetState(@SW_SHOW)
+
+    ; Loop until the user exits.
+    While 1
+        Switch GUIGetMsg()
+            Case $GUI_EVENT_CLOSE
+                ExitLoop
+
+        EndSwitch
+    WEnd
+
+    ; Delete the previous GUIs and all controls.
+    GUIDelete($hGUI)
+    GUIDelete($hChild)
+EndFunc   ;==>Example

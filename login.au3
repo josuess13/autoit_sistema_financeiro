@@ -15,6 +15,7 @@ Func login()
     ; Tela de Login
     Global $tela_login = GUICreate("Login", 250, 300)
 	GUISetBkColor(0x4682B4)
+	GUISetIcon("icones\money.ico")
 	; Login
 	Local $lb_login = GUICtrlCreateLabel("Login", 95, 50, 55, 25)
 	GUICtrlSetFont($lb_login, 15, 700)
@@ -67,7 +68,7 @@ Func ler_dados()
 	_SQLite_FetchData($hQuery, $iRows)
 	local $db_login = $iRows[0]
 	If $db_login == "" Then
-		MsgBox(0, "Erro", "Usuário não cadastrado")
+		MsgBox(64, "Erro", "Usuário não cadastrado")
 	Else
 		; Busca pela senha
 		local $consulta_senha = "SELECT usuarios.senha FROM usuarios where usuarios.login = '" & $login & "';"
@@ -75,7 +76,7 @@ Func ler_dados()
 		_SQLite_FetchData($hQuery, $iRows)
 		local $db_senha = $iRows[0]
 		If $db_senha <> $senha Then
-			MsgBox(0, "", "Senha incorreta")
+			MsgBox(64, "Erro", "Senha incorreta")
 		Else
 			GUIDelete($tela_login)
 			tela_inicial()

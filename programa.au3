@@ -8,18 +8,60 @@
 #include <EditConstants.au3>
 #include <ButtonConstants.au3>
 #include <GUIConstants.au3>
-
+#include <MsgBoxConstants.au3>
+tela_inicial()
 Func tela_inicial()
-    Global $tela_inicial = GUICreate("Program", 250, 300)
-    GUISetStyle($WS_POPUP, -1, $tela_inicial)
-    WinMove($tela_inicial, "", 0, 0, @DesktopWidth, @DesktopHeight)
-    GUISetState(@SW_SHOW, $tela_inicial)
+    ; tela principal 
+    Global $tela_inicial = GUICreate("Seu Financeiro", 900, 600)
+    GUISetIcon("icones\money.ico")
+    GUISetState()
+    ; Menu movimentos
+    Global $m_movimentos = GUICtrlCreateMenu("Movimentos")
+    GUICtrlSetState($m_movimentos, $GUI_DEFBUTTON)
+    Global $m_movimentos_entradas = GUICtrlCreateMenuItem("Entradas", $m_movimentos)
+    Global $m_movimentos_saidas = GUICtrlCreateMenuItem("Saídas", $m_movimentos)
     While 1
         Switch GUIGetMsg()
             Case $GUI_EVENT_CLOSE
                 ExitLoop
+            Case $m_movimentos_entradas
+                GUISetState(@SW_DISABLE, $tela_inicial)
+                entradas()
+                GUISetState(@SW_ENABLE, $tela_inicial)
+                WinActivate($tela_inicial)
+            Case $m_movimentos_saidas
+                GUISetState(@SW_DISABLE, $tela_inicial)
+                saidas()
+                GUISetState(@SW_ENABLE, $tela_inicial)
+                WinActivate($tela_inicial)
         EndSwitch
     WEnd
     GUIDelete($tela_inicial)
 
+EndFunc
+
+Func entradas()
+    Global $tela_entradas = GUICreate("Entradas", 800, 500)
+    GUISetIcon("icones\entradas.ico")
+    GUISetState()
+    While 1
+		Switch GUIGetMsg()
+			Case $GUI_EVENT_CLOSE
+				GUIDelete($tela_entradas)
+				ExitLoop
+		EndSwitch
+	WEnd
+EndFunc
+
+Func saidas()
+    Global $tela_saidas = GUICreate("Saídas", 800, 500)
+    GUISetIcon("icones\saidas.ico")
+    GUISetState()
+    While 1
+		Switch GUIGetMsg()
+			Case $GUI_EVENT_CLOSE
+				GUIDelete($tela_saidas)
+				ExitLoop
+		EndSwitch
+	WEnd
 EndFunc
