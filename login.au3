@@ -8,13 +8,16 @@
 #include <EditConstants.au3>
 #include <ButtonConstants.au3>
 #include <programa.au3>
+#include <GUIConstants.au3>
+#include <MsgBoxConstants.au3>
+
 
 login()
 
 Func login()
     ; Tela de Login
-    Global $tela_login = GUICreate("Login", 300, 420)
-	;GUISetBkColor(0x4682B4)
+    Global $tela_login = GUICreate("Login", 300, 440)
+	GUISetBkColor(0x808080)
 	GUISetIcon("icones\money.ico")
 	GUICtrlCreatePic("icones\login.bmp", 50, 10, 200, 200)
 	; Login
@@ -32,15 +35,14 @@ Func login()
 	GUICtrlSetFont($in_senha, 15, 700)
 	GUICtrlSetBkColor($in_senha, 0xB0C4DE)
 	; Botão Fechar
-    Global $fechar = GUICtrlCreateButton("Sair", 50, 355, 60, 40, $BS_ICON)
+    Global $fechar = GUICtrlCreateButton("Sair", 50, 365, 60, 40, $BS_ICON)
 	GUICtrlSetImage($fechar, "icones\Sair.ico", 22)
 	; Botão Entrar
-	Global $entrar = GUICtrlCreateButton("Entrar", 115, 355, 135, 40, $BS_DEFPUSHBUTTON)
+	Global $entrar = GUICtrlCreateButton("Entrar", 115, 365, 135, 40, $BS_DEFPUSHBUTTON)
 	GUICtrlSetFont($entrar, 12, 700)
 	GUICtrlSetBkColor($entrar, 0x5F9EA0)
     ; Display the GUI.
     GUISetState(@SW_SHOW, $tela_login)
-
     While 1
         Switch GUIGetMsg()
             Case $GUI_EVENT_CLOSE, $fechar
@@ -70,9 +72,10 @@ Func ler_dados()
 	local $db_login = $iRows[0]
 	_SQLite_QueryFinalize($hQuery)
 	If $db_login == "" Then
-		MsgBox(64, "Erro", "Usuário não cadastrado")
+		msg_erro("Usuário não cadastrado")
 		ControlClick("Login", "", $in_login, "left", 1, 199, 10)
 	Else
+		GUICtrlDelete($msg_erro)
 		; Busca pela senha
 		local $consulta_senha = "SELECT usuarios.senha FROM usuarios where usuarios.login = '" & $login & "';"
 		_SQLite_Query(-1, $consulta_senha, $hQuery)
@@ -80,7 +83,7 @@ Func ler_dados()
 		local $db_senha = $iRows[0]
 		_SQLite_QueryFinalize($hQuery)
 		If $db_senha <> $senha Then
-			MsgBox(64, "Erro", "Senha incorreta")
+			If $senha <> "" Then msg_erro("Senha incorreta")
 			ControlClick("Login", "", $in_senha, "left", 1, 199, 10)
 		Else
 			GUIDelete($tela_login)
@@ -94,6 +97,10 @@ Func ler_dados()
 
 EndFunc
 
-
+Func msg_erro($mensagem)
+		Global $msg_erro = GUICtrlCreateLabel($mensagem, 50, 340, 200, -1, $SS_CENTER)
+		GUICtrlSetColor(-1, 0xFFFFFF)
+		GUICtrlSetFont(-1, 11, 0)
+EndFunc
 
 
