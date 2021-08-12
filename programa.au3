@@ -9,7 +9,9 @@
 #include <ButtonConstants.au3>
 #include <GUIConstants.au3>
 #include <MsgBoxConstants.au3>
-tela_inicial()
+#include <entradas.au3>
+;tela_inicial()
+
 Func tela_inicial()
     ; tela principal 
     Global $tela_inicial = GUICreate("Seu Financeiro", 900, 600)
@@ -40,18 +42,7 @@ Func tela_inicial()
 
 EndFunc
 
-Func entradas()
-    Global $tela_entradas = GUICreate("Entradas", 800, 500)
-    GUISetIcon("icones\entradas.ico")
-    GUISetState()
-    While 1
-		Switch GUIGetMsg()
-			Case $GUI_EVENT_CLOSE
-				GUIDelete($tela_entradas)
-				ExitLoop
-		EndSwitch
-	WEnd
-EndFunc
+
 
 Func saidas()
     Global $tela_saidas = GUICreate("Saídas", 800, 500)
