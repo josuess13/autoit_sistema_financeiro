@@ -67,6 +67,7 @@ Func ler_dados()
 	_SQLite_Query(-1, $consulta_nome, $hQuery)
 	_SQLite_FetchData($hQuery, $iRows)
 	local $db_login = $iRows[0]
+	_SQLite_QueryFinalize($hQuery)
 	If $db_login == "" Then
 		MsgBox(64, "Erro", "Usuário não cadastrado")
 	Else
@@ -75,6 +76,7 @@ Func ler_dados()
 		_SQLite_Query(-1, $consulta_senha, $hQuery)
 		_SQLite_FetchData($hQuery, $iRows)
 		local $db_senha = $iRows[0]
+		_SQLite_QueryFinalize($hQuery)
 		If $db_senha <> $senha Then
 			MsgBox(64, "Erro", "Senha incorreta")
 		Else

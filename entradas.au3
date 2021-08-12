@@ -14,7 +14,7 @@
 #include <GuiListView.au3>
 #include <ListViewConstants.au3>
 #include <StaticConstants.au3>
-entradas()
+;entradas()
 Func entradas()
     Global $tela_entradas = GUICreate("Entradas", 800, 500)
     GUISetIcon("icones\entradas.ico")

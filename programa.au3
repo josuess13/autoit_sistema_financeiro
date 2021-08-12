@@ -39,6 +39,7 @@ Func tela_inicial()
         EndSwitch
     WEnd
     GUIDelete($tela_inicial)
+    Exit
 
 EndFunc
 
