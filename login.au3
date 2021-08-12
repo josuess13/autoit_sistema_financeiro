@@ -13,28 +13,29 @@ login()
 
 Func login()
     ; Tela de Login
-    Global $tela_login = GUICreate("Login", 250, 300)
-	GUISetBkColor(0x4682B4)
+    Global $tela_login = GUICreate("Login", 300, 420)
+	;GUISetBkColor(0x4682B4)
 	GUISetIcon("icones\money.ico")
+	GUICtrlCreatePic("icones\login.bmp", 50, 10, 200, 200)
 	; Login
-	Local $lb_login = GUICtrlCreateLabel("Login", 95, 50, 55, 25)
+	Local $lb_login = GUICtrlCreateLabel("Login", 122, 210, 55, 25)
 	GUICtrlSetFont($lb_login, 15, 700)
-	local $in_login = GUICtrlCreateInput("", 50, 80, 150, 30)
+	Global $in_login = GUICtrlCreateInput("", 50, 240, 200, 30)
 	GUICtrlSetFont($in_login, 15, 700)
 	GUICtrlSetColor($in_login, 0x4F4F4F)
 	GUICtrlSetBkColor($in_login, 0xB0C4DE)
 	GUICtrlSetStyle($in_login, BitOr($ES_CENTER, $ES_UPPERCASE))
 	; Senha
-	Local $lb_senha = GUICtrlCreateLabel("Senha", 95, 115, 60, 25)
+	Local $lb_senha = GUICtrlCreateLabel("Senha", 122, 275, 60, 25)
 	GUICtrlSetFont($lb_senha, 15, 700)
-	local $in_senha = GUICtrlCreateInput("", 50, 145, 150, 30, BitOr($ES_CENTER, $ES_PASSWORD, $ES_AUTOHSCROLL))
+	Global $in_senha = GUICtrlCreateInput("", 50, 305, 200, 30, BitOr($ES_CENTER, $ES_PASSWORD, $ES_AUTOHSCROLL))
 	GUICtrlSetFont($in_senha, 15, 700)
 	GUICtrlSetBkColor($in_senha, 0xB0C4DE)
 	; Botão Fechar
-    Local $fechar = GUICtrlCreateButton("Sair", 50, 185, 40, 40, $BS_ICON)
+    Global $fechar = GUICtrlCreateButton("Sair", 50, 355, 60, 40, $BS_ICON)
 	GUICtrlSetImage($fechar, "icones\Sair.ico", 22)
 	; Botão Entrar
-	Local $entrar = GUICtrlCreateButton("Entrar", 95, 185, 105, 40)
+	Global $entrar = GUICtrlCreateButton("Entrar", 115, 355, 135, 40, $BS_DEFPUSHBUTTON)
 	GUICtrlSetFont($entrar, 12, 700)
 	GUICtrlSetBkColor($entrar, 0x5F9EA0)
     ; Display the GUI.
@@ -70,6 +71,7 @@ Func ler_dados()
 	_SQLite_QueryFinalize($hQuery)
 	If $db_login == "" Then
 		MsgBox(64, "Erro", "Usuário não cadastrado")
+		ControlClick("Login", "", $in_login, "left", 1, 199, 10)
 	Else
 		; Busca pela senha
 		local $consulta_senha = "SELECT usuarios.senha FROM usuarios where usuarios.login = '" & $login & "';"
@@ -79,6 +81,7 @@ Func ler_dados()
 		_SQLite_QueryFinalize($hQuery)
 		If $db_senha <> $senha Then
 			MsgBox(64, "Erro", "Senha incorreta")
+			ControlClick("Login", "", $in_senha, "left", 1, 199, 10)
 		Else
 			GUIDelete($tela_login)
 			tela_inicial()
