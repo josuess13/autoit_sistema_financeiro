@@ -10,6 +10,7 @@
 #include <GUIConstants.au3>
 #include <MsgBoxConstants.au3>
 #include <entradas.au3>
+#include <saidas.au3>
 ;tela_inicial()
 
 Func tela_inicial()
@@ -20,8 +21,8 @@ Func tela_inicial()
     ; Menu movimentos
     Global $m_movimentos = GUICtrlCreateMenu("Movimentos")
     GUICtrlSetState($m_movimentos, $GUI_DEFBUTTON)
-    Global $m_movimentos_entradas = GUICtrlCreateMenuItem("Entradas", $m_movimentos)
-    Global $m_movimentos_saidas = GUICtrlCreateMenuItem("Saídas", $m_movimentos)
+    Global $m_movimentos_entradas = GUICtrlCreateMenuItem("Receitas", $m_movimentos)
+    Global $m_movimentos_saidas = GUICtrlCreateMenuItem("Despesas", $m_movimentos)
     While 1
         Switch GUIGetMsg()
             Case $GUI_EVENT_CLOSE
@@ -41,19 +42,4 @@ Func tela_inicial()
     GUIDelete($tela_inicial)
     Exit
 
-EndFunc
-
-
-
-Func saidas()
-    Global $tela_saidas = GUICreate("Saídas", 800, 500)
-    GUISetIcon("icones\saidas.ico")
-    GUISetState()
-    While 1
-		Switch GUIGetMsg()
-			Case $GUI_EVENT_CLOSE
-				GUIDelete($tela_saidas)
-				ExitLoop
-		EndSwitch
-	WEnd
 EndFunc

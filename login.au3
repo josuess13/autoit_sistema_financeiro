@@ -10,7 +10,7 @@
 #include <programa.au3>
 #include <GUIConstants.au3>
 #include <MsgBoxConstants.au3>
-
+Global $msg_erro
 
 login()
 
@@ -74,6 +74,7 @@ Func ler_dados()
 	If $db_login == "" Then
 		msg_erro("Usuário não cadastrado")
 		ControlClick("Login", "", $in_login, "left", 1, 199, 10)
+
 	Else
 		GUICtrlDelete($msg_erro)
 		; Busca pela senha
@@ -98,9 +99,9 @@ Func ler_dados()
 EndFunc
 
 Func msg_erro($mensagem)
-		Global $msg_erro = GUICtrlCreateLabel($mensagem, 50, 340, 200, -1, $SS_CENTER)
-		GUICtrlSetColor(-1, 0xFFFFFF)
-		GUICtrlSetFont(-1, 11, 0)
+	Global $msg_erro = GUICtrlCreateLabel($mensagem, 50, 340, 200, -1, $SS_CENTER)
+	GUICtrlSetColor(-1, 0xFFFFFF)
+	GUICtrlSetFont(-1, 11, 0)
 EndFunc
 
 
