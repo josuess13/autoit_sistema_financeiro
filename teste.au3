@@ -1,21 +1,15 @@
-#include <GUIConstantsEx.au3>
+#include <GUIConstants.au3>
 
-Example()
+;Const $WM_SYSCOMMAND = 0x0112
+;Const $SC_MOVE = 0xF010
 
-Func Example()
-    GUICreate("My GUI control tip") ; will create a dialog box that when displayed is centered
+$gui = GUICreate("", 300, 200)
+GUISetState(@SW_SHOW)
+GUIRegisterMsg(0x0112, "On_WM_SYSCOMMAND")
 
-    GUICtrlCreateLabel("my label", 10, 20)
-    GUICtrlSetTip(-1, "tip of my label")
+While GUIGetMsg() <> $GUI_EVENT_CLOSE
+WEnd
 
-    GUISetState(@SW_SHOW)
-
-    ; Loop until the user exits.
-    While 1
-        Switch GUIGetMsg()
-            Case $GUI_EVENT_CLOSE
-                ExitLoop
-
-        EndSwitch
-    WEnd
-EndFunc   ;==>Example
+Func On_WM_SYSCOMMAND($hWnd, $Msg, $wParam, $lParam)
+    If BitAND($wParam, 0xFFF0) = 0xF010 Then Return
+EndFunc
