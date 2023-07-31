@@ -20,8 +20,8 @@ Func login()
 	GUISetBkColor(0x808080)
 	GUISetIcon("icones\money.ico")
 	GUICtrlCreatePic("icones\login.bmp", 50, 10, 200, 200)
-	; Login
-	Local $lb_login = GUICtrlCreateLabel("Login", 122, 210, 55, 25)
+	; Usuário
+	Local $lb_login = GUICtrlCreateLabel("Usuário", 122, 210, 75, 25)
 	GUICtrlSetFont($lb_login, 15, 700)
 	Global $in_login = GUICtrlCreateInput("", 50, 240, 200, 30)
 	GUICtrlSetFont($in_login, 15, 700)
@@ -72,9 +72,8 @@ Func ler_dados()
 	local $db_login = $iRows[0]
 	_SQLite_QueryFinalize($hQuery)
 	If $db_login == "" Then
-		msg_erro("Usuário não cadastrado")
+		msg_erro("Usuário ou Senha incorretos")
 		ControlClick("Login", "", $in_login, "left", 1, 199, 10)
-
 	Else
 		GUICtrlDelete($msg_erro)
 		; Busca pela senha
@@ -84,7 +83,7 @@ Func ler_dados()
 		local $db_senha = $iRows[0]
 		_SQLite_QueryFinalize($hQuery)
 		If $db_senha <> $senha Then
-			If $senha <> "" Then msg_erro("Senha incorreta")
+			If $senha <> "" Then msg_erro("Usuário ou Senha incorretos")
 			ControlClick("Login", "", $in_senha, "left", 1, 199, 10)
 		Else
 			GUIDelete($tela_login)

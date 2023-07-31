@@ -125,14 +125,14 @@ Func adicionar_receitas()
 			case $btn_cancelar
 				MsgBox(0, "", "Cancelar")
 			case $btn_add_obs
-				add_obs()
+				adicionar_observacao_entrada()
 		endswitch
 
 	WEnd
 
 EndFunc
 
-Func add_obs()
+Func adicionar_observacao_entrada()
     Local $hGUI = GUICreate("Adicionar Observação", 380, 200)
 	GUISetBkColor(0xB0E0E6)
     GUISetState(@SW_SHOW, $hGUI)
@@ -170,5 +170,5 @@ Func add_obs()
     GUIDelete($hGUI)
 EndFunc
 
-;add_obs()
-adicionar_receitas()
+;adicionar_observacao_entrada()
+;adicionar_receitas()
