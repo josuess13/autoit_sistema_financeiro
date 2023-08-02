@@ -1,15 +1,5 @@
 # AutoIt3Wrapper_UseX64 = Y
-#include <Array.au3>
-#include <SQLite.au3>
-#include <SQLite.dll.au3>
-#include <GUIConstantsEx.au3>
-#include <StaticConstants.au3>
-#include <ColorConstants.au3>
-#include <EditConstants.au3>
-#include <ButtonConstants.au3>
-#include <programa.au3>
-#include <GUIConstants.au3>
-#include <MsgBoxConstants.au3>
+#include <includes.au3>
 Global $msg_erro
 
 login()

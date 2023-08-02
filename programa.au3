@@ -1,16 +1,5 @@
 # AutoIt3Wrapper_UseX64 = Y
-#include <Array.au3>
-#include <SQLite.au3>
-#include <SQLite.dll.au3>
-#include <GUIConstantsEx.au3>
-#include <StaticConstants.au3>
-#include <ColorConstants.au3>
-#include <EditConstants.au3>
-#include <ButtonConstants.au3>
-#include <GUIConstants.au3>
-#include <MsgBoxConstants.au3>
-#include <entradas.au3>
-#include <saidas.au3>
+
 tela_inicial()
 
 Func tela_inicial()
@@ -18,18 +7,18 @@ Func tela_inicial()
     Local $tela_inicial = GUICreate("Seu Financeiro", 900, 600)
 	GUISetState(@SW_SHOW, $tela_inicial)
     GUISetIcon("icones\money.ico")
-	
+
 	;GUISetState()
 
-	local $btn_receitas_inicial = GUICtrlCreateButton("RECEITAS $$$", 10, 10, 200, 100)
+	local $btn_receitas_inicial = GUICtrlCreateButton("RECEITAS", 10, 10, 200, 100)
 	GUICtrlSetFont(-1, 16, 800, 0, "Arial")
-	GUICtrlSetBkColor(-1, $COLOR_GREEN)
+	GUICtrlSetBkColor(-1, $COLOR_MEDIUMSEAGREEN)
 
 	local $btn_despesas_inicial = GUICtrlCreateButton("DESPESAS", 10, 120, 200, 100)
 	GUICtrlSetFont($btn_despesas_inicial, 16, 800, 0, "Arial")
-	GUICtrlSetBkColor($btn_despesas_inicial, $COLOR_MONEYGREEN)
+	GUICtrlSetBkColor($btn_despesas_inicial, $COLOR_INDIANRED)
 
-	
+
     ; Menu movimentos
     Local $m_movimentos = GUICtrlCreateMenu("Movimentos")
     ;GUICtrlSetState($m_movimentos, $GUI_DEFBUTTON)

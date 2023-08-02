@@ -1,6 +1,5 @@
 # AutoIt3Wrapper_UseX64 = Y
-#include <Array.au3>
-#include <SQLite.au3>
+
 #include<SQLite.dll.au3>
 
 _SQLite_Startup() ; Load the DLL

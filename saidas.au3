@@ -1,10 +1,4 @@
-#include <GUIConstants.au3>
-#include <MsgBoxConstants.au3>
-#include <DateTimeConstants.au3>
-#include <Date.au3>
-#include <GuiListView.au3>
-#include <ListViewConstants.au3>
-#include <StaticConstants.au3>
+
 ;entradas()
 Func saidas()
     Global $tela_saidas = GUICreate("Despesas", 800, 500)

@@ -1,19 +1,5 @@
 # AutoIt3Wrapper_UseX64 = Y
-#include <Array.au3>
-#include <SQLite.au3>
-#include <SQLite.dll.au3>
-#include <GUIConstantsEx.au3>
-#include <StaticConstants.au3>
-#include <ColorConstants.au3>
-#include <EditConstants.au3>
-#include <ButtonConstants.au3>
-#include <GUIConstants.au3>
-#include <MsgBoxConstants.au3>
-#include <DateTimeConstants.au3>
-#include <Date.au3>
-#include <GuiListView.au3>
-#include <ListViewConstants.au3>
-#include <StaticConstants.au3>
+
 ;entradas()
 Func entradas()
     Global $tela_entradas = GUICreate("Receitas", 800, 500)
