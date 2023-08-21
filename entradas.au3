@@ -1,39 +1,39 @@
 # AutoIt3Wrapper_UseX64 = Y
+Global $observacao_entrada = ""
 
-;entradas()
 Func entradas()
-    Global $tela_entradas = GUICreate("Receitas", 800, 500)
+    Local $tela_entradas = GUICreate("Receitas", 800, 500)
     GUISetIcon("icones\entradas.ico")
     GUISetState()
     ; Botão Adicionar
-    Global $btn_adicionar = GUICtrlCreateButton("Adicionar +", 20, 30, 120, 40)
+    Local $btn_adicionar = GUICtrlCreateButton("Adicionar +", 20, 30, 120, 40)
 	GUICtrlSetFont($btn_adicionar, 13, 700)
     ; Data
-    Global $datas_mes_ano = GUICtrlCreateLabel(_DateToMonth(@MON, $DMW_LOCALE_LONGNAME) & "/" & @YEAR, 20, 100, 120, 40, $SS_CENTER)
+    Local $datas_mes_ano = GUICtrlCreateLabel(_DateToMonth(@MON, $DMW_LOCALE_LONGNAME) & "/" & @YEAR, 20, 100, 120, 40, $SS_CENTER)
 	GUICtrlSetFont($datas_mes_ano, 13, 700)
 	GUICtrlSetColor($datas_mes_ano, 0x228B22)
 
 	; Botão Entradas mês
-	Global $btn_entradas_mes = GUICtrlCreateButton("Entradas no mês", 20, 150, 120, 40)
+	Local $btn_entradas_mes = GUICtrlCreateButton("Entradas no mês", 20, 150, 120, 40)
 	GUICtrlSetFont(-1, 9, 700)
 	; Botão entradas no ano
-	Global $btn_entradas_ano = GUICtrlCreateButton("Entradas no ano", 20, 200, 120, 40)
+	Local $btn_entradas_ano = GUICtrlCreateButton("Entradas no ano", 20, 200, 120, 40)
 	GUICtrlSetFont(-1, 9, 700)
 	; Filtrar datas
 	Local $filtrar_datas_entre = GUICtrlCreateLabel("Mostrar entradas entre:", 20, 250, 120, 40, $SS_CENTER)
 	GUICtrlSetFont($filtrar_datas_entre, 9, 700)
-	Global $data_inicio = GUICtrlCreateDate("", 20, 290, 120, 20, $DTS_SHORTDATEFORMAT)
+	Local $data_inicio = GUICtrlCreateDate("", 20, 290, 120, 20, $DTS_SHORTDATEFORMAT)
 	GUICtrlCreateLabel("e:", 20, 310, 120, -1, $SS_CENTER)
 	GUICtrlSetFont(-1, 9, 700)
-	Global $data_fim = GUICtrlCreateDate("", 20, 330, 120, 20, $DTS_SHORTDATEFORMAT)
-	Global $btn_filtrar = GUICtrlCreateButton("Filtrar", 20, 360, 120, 40)
+	Local $data_fim = GUICtrlCreateDate("", 20, 330, 120, 20, $DTS_SHORTDATEFORMAT)
+	Local $btn_filtrar = GUICtrlCreateButton("Filtrar", 20, 360, 120, 40)
 	GUICtrlSetFont(-1, 9, 700)
-	Global $limpar_filtros = GUICtrlCreateButton("Limpar Filtros", 20, 425, 120, 40)
+	Local $limpar_filtros = GUICtrlCreateButton("Limpar Filtros", 20, 425, 120, 40)
 	GUICtrlSetFont(-1, 9, 700)
 
 	; Exibir entradas
-	Global $tabela = GUICtrlCreateListView("Valor|Entrada|Data", 160, 30, 590, 432, $LVS_EDITLABELS)
-	Global $tabela_valor = GUICtrlCreateListViewItem("R$ 1.200,00|Salário Agosto|01/08/2021", $tabela)
+	Local $tabela = GUICtrlCreateListView("Valor|Entrada|Data", 160, 30, 590, 432, $LVS_EDITLABELS)
+	Local $tabela_valor = GUICtrlCreateListViewItem("R$ 1.200,00|Salário Agosto|01/08/2021", $tabela)
 	_GUICtrlListView_SetColumnWidth($tabela, 0, 100)
 	_GUICtrlListView_SetColumnWidth($tabela, 1, 385)
 	_GUICtrlListView_SetColumnWidth($tabela, 2, 100)
@@ -61,7 +61,7 @@ Func adicionar_receitas()
 	; Descrição
 	GUICtrlCreateLabel("Descrição", 80, 10, 100, 25)
 	GUICtrlSetFont(-1, 15, 700)
-	GUICtrlCreateInput("", 30, 40, 200, 30)
+	Local $descricao_entrada = GUICtrlCreateInput("", 30, 40, 200, 30)
 	GUICtrlSetFont(-1, 15, 400)
 	GUICtrlSetBkColor(-1, 0xDCDCDC)
 	GUICtrlSetTip(-1, "Descrição da entrada. Ex: Salário Mês")
@@ -69,7 +69,7 @@ Func adicionar_receitas()
 	; Salário?
 	GUICtrlCreateLabel("Salário", 240, 10, 70, 25)
 	GUICtrlSetFont(-1, 15, 700)
-	GUICtrlCreateCheckbox("", 270, 40, 15, 30)
+	Local $salario = GUICtrlCreateCheckbox("", 270, 40, 15, 30)
 	GUICtrlSetTip(-1, "Marque essa opção caso o valor seja referente ao salário do mês")
 	; Obs
 	GUICtrlCreateLabel("Obs.", 333, 10, 70, 25)
@@ -81,14 +81,14 @@ Func adicionar_receitas()
 	; Valor
 	GUICtrlCreateLabel("Valor", 110, 80, 100, 25)
 	GUICtrlSetFont(-1, 15, 700)
-	GUICtrlCreateInput("", 30, 105, 200, 30, $ES_NUMBER)
+	Local $valor_entrada = GUICtrlCreateInput("", 30, 105, 200, 30, $ES_NUMBER)
 	GUICtrlSetFont(-1, 15, 400)
 	GUICtrlSetBkColor(-1, 0xDCDCDC)
-	GUICtrlSetTip(-1, "Valor em Reais")
+	GUICtrlSetTip(-1, "Valor em Reais") ; colocar máscara
 	; Data
 	GUICtrlCreateLabel("Data", 275, 80, 100, 25)
 	GUICtrlSetFont(-1, 15, 700)
-	GUICtrlCreateDate("", 240, 105, 137, 30, $DTS_SHORTDATEFORMAT)
+	Local $data_entrada = GUICtrlCreateDate("", 240, 105, 137, 30, $DTS_SHORTDATEFORMAT)
 	GUICtrlSetFont(-1, 15, 400)
 	; Botões
 	local $btn_salvar = GUICtrlCreateButton("Salvar", 30, 170, 109, 40)
@@ -107,9 +107,14 @@ Func adicionar_receitas()
 				GUIDelete($tela_cadastro_receitas)
 				ExitLoop
 			case $btn_salvar
-				MsgBox(0, "", "Salvar")
+				Local $ler_descricao = ControlGetText($tela_cadastro_receitas, "", $descricao_entrada)
+				Local $ler_salario = ControlCommand($tela_cadastro_receitas, "", $salario, "IsChecked", "")
+				Local $ler_valor = ControlGetText($tela_cadastro_receitas, "", $valor_entrada)
+				Local $ler_data = ControlGetText($tela_cadastro_receitas, "", $data_entrada)
+				Local $ler_obs = $observacao_entrada
+				adicionar_receita($ler_descricao,  $ler_valor,  $ler_data, $ler_salario, $ler_obs)
 			case $btn_cancelar
-				MsgBox(0, "", "Cancelar")
+				MsgBox(0, "", "Cancelar") ; limpar os campos
 			case $btn_add_obs
 				adicionar_observacao_entrada()
 		endswitch
@@ -125,7 +130,7 @@ Func adicionar_observacao_entrada()
 	; Campo observação
 	GUICtrlCreateLabel("Observação", 120, 10, 120, 25)
 	GUICtrlSetFont(-1, 15, 700)
-	GUICtrlCreateInput("", 30, 40, 310, 100, $ES_MULTILINE)
+	Local $texto_da_observacao = GUICtrlCreateInput($observacao_entrada, 30, 40, 310, 100, $ES_MULTILINE)
 	GUICtrlSetFont(-1, 15, 400)
 	GUICtrlSetBkColor(-1, 0xDCDCDC)
 	GUICtrlSetTip(-1, "Descrição da entrada. Ex: Salário Mês")
@@ -144,17 +149,12 @@ Func adicionar_observacao_entrada()
             Case $GUI_EVENT_CLOSE
                 ExitLoop
 			Case $btn_salvar
-				MsgBox(0, "", "Você clicou em salvar")
-			Case $btn_voltar
-				MsgBox(0, "", "Você clicou em voltar")
+				$observacao_entrada = ControlGetText($hGUI, "", $texto_da_observacao)
 				ExitLoop
-
+			Case $btn_voltar
+				ExitLoop
         EndSwitch
     WEnd
-
     ; Delete the previous GUI and all controls.
     GUIDelete($hGUI)
 EndFunc
-
-;adicionar_observacao_entrada()
-;adicionar_receitas()

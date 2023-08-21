@@ -1,7 +1,10 @@
 # AutoIt3Wrapper_UseX64 = Y
+#include-once
 #include <includes.au3>
+#include <SQLite.au3>
+#include <SQLite.dll.au3>
 Global $msg_erro
-
+;adicionar_receitas()
 login()
 
 Func login()
@@ -40,14 +43,14 @@ Func login()
 			Case $entrar
 				Global $login = GUICtrlRead($in_login)
 				Global $senha = GUICtrlRead($in_senha)
-				ler_dados()
+				ler_dados_login()
 
         EndSwitch
     WEnd
     GUIDelete($tela_login)
 EndFunc
 
-Func ler_dados()
+Func ler_dados_login()
 	_SQLite_Startup() ; chama DLL
 	If @error Then Exit MsgBox(0, "Erro", "Erro ao iniciar SQLite, por favor, verifique sua DLL")
 	; Conecta e abre o banco
@@ -84,7 +87,6 @@ Func ler_dados()
 	; Fecha conexão
 	_SQLite_Close($hDatabase)
 	_SQLite_Shutdown()
-
 EndFunc
 
 Func msg_erro($mensagem)
@@ -92,5 +94,3 @@ Func msg_erro($mensagem)
 	GUICtrlSetColor(-1, 0xFFFFFF)
 	GUICtrlSetFont(-1, 11, 0)
 EndFunc
-
-

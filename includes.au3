@@ -16,6 +16,7 @@
 #include <programa.au3>
 #include <entradas.au3>
 #include <saidas.au3>
+#include <query.au3>
 
 
 

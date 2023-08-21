@@ -1,6 +1,6 @@
 # AutoIt3Wrapper_UseX64 = Y
 
-tela_inicial()
+;tela_inicial()
 
 Func tela_inicial()
     ; tela principal
