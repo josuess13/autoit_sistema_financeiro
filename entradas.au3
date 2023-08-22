@@ -58,6 +58,9 @@ Func adicionar_receitas()
 	GUISetIcon("icones\add_round.ico")
     GUISetState()
 	GUISetBkColor(0xB0E0E6)
+	; Vírgula
+	GUICtrlCreateLabel(",", 110, 105, 55, 55)
+	GUICtrlSetFont(-1, 50, 700)
 	; Descrição
 	GUICtrlCreateLabel("Descrição", 80, 10, 100, 25)
 	GUICtrlSetFont(-1, 15, 700)
@@ -79,12 +82,18 @@ Func adicionar_receitas()
 	GUICtrlSetImage(-1, "icones\add.ico", 22)
 	GUICtrlSetTip(-1, "Adicionar Observação a essa entrada")
 	; Valor
-	GUICtrlCreateLabel("Valor", 110, 80, 100, 25)
+	GUICtrlCreateLabel("Valor R$", 110, 80, 100, 25)
 	GUICtrlSetFont(-1, 15, 700)
-	Local $valor_entrada = GUICtrlCreateInput("", 30, 105, 200, 30, $ES_NUMBER)
-	GUICtrlSetFont(-1, 15, 400)
-	GUICtrlSetBkColor(-1, 0xDCDCDC)
-	GUICtrlSetTip(-1, "Valor em Reais") ; colocar máscara
+	Global $valor_entrada_reais; = GUICtrlCreateInput("", 30, 105, 152, 30, BitOr($ES_NUMBER, $ES_RIGHT))
+	;~ GUICtrlSetTip(-1, "Reais")
+	;~ GUICtrlSetFont(-1, 15, 400)
+	;~ GUICtrlSetBkColor(-1, 0xDCDCDC)
+	;centavos
+	Global $valor_entrada_centavos ;= GUICtrlCreateInput("00", 191, 105, 40, 30, $ES_NUMBER)
+	;~ GUICtrlSetFont(-1, 15, 400)
+	;~ GUICtrlSetBkColor(-1, 0xDCDCDC)
+	;~ GUICtrlSetTip(-1, "Centavos")
+	;~ GUICtrlSetLimit($valor_entrada_centavos, 2)
 	; Data
 	GUICtrlCreateLabel("Data", 275, 80, 100, 25)
 	GUICtrlSetFont(-1, 15, 700)
@@ -109,7 +118,7 @@ Func adicionar_receitas()
 			case $btn_salvar
 				Local $ler_descricao = ControlGetText($tela_cadastro_receitas, "", $descricao_entrada)
 				Local $ler_salario = ControlCommand($tela_cadastro_receitas, "", $salario, "IsChecked", "")
-				Local $ler_valor = ControlGetText($tela_cadastro_receitas, "", $valor_entrada)
+				Local $ler_valor = ControlGetText($tela_cadastro_receitas, "", $valor_entrada_reais)
 				Local $ler_data = ControlGetText($tela_cadastro_receitas, "", $data_entrada)
 				Local $ler_obs = $observacao_entrada
 				adicionar_receita($ler_descricao,  $ler_valor,  $ler_data, $ler_salario, $ler_obs)
@@ -118,9 +127,7 @@ Func adicionar_receitas()
 			case $btn_add_obs
 				adicionar_observacao_entrada()
 		endswitch
-
 	WEnd
-
 EndFunc
 
 Func adicionar_observacao_entrada()

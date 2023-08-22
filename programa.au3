@@ -24,7 +24,7 @@ Func tela_inicial()
     ;GUICtrlSetState($m_movimentos, $GUI_DEFBUTTON)
     Local $m_movimentos_entradas = GUICtrlCreateMenuItem("Receitas", $m_movimentos)
     Local $m_movimentos_saidas = GUICtrlCreateMenuItem("Despesas", $m_movimentos)
-	$plano_fundo = GUICtrlCreatePic("C:\autoit\interfaces\autoit_sistema_financeiro\icones\plano_fundo.jpg", 0, 0, 900, 600)
+	$plano_fundo = GUICtrlCreatePic(@ScriptDir & "\icones\plano_fundo.jpg", 0, 0, 900, 600)
     While 1
         Switch GUIGetMsg()
             Case $GUI_EVENT_CLOSE

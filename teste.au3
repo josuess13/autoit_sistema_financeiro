@@ -1,36 +1,27 @@
 #include <GUIConstantsEx.au3>
+#include <WindowsConstants.au3>
+#include <EditConstants.au3>
+#include <StringConstants.au3>
 
 Example()
 
 Func Example()
-        ; Create a GUI with various controls.
-        Local $hGUI = GUICreate("Example", 300, 200)
+    Local $hGUI = GUICreate("Valor Formatado", 300, 200)
 
-        ; Create a button control.
-        Local $idButton_Notepad = GUICtrlCreateButton("Run Notepad", 120, 170, 85, 25)
-        Local $idButton_Close = GUICtrlCreateButton("Close", 210, 170, 85, 25)
+    Local $inputValor = GUICtrlCreateInput("", 50, 50, 200, 24)
+    Local $buttonFormatar = GUICtrlCreateButton("Formatar", 100, 100, 100, 30)
 
-        ; Display the GUI.
-        GUISetState(@SW_SHOW, $hGUI)
+    GUISetState(@SW_SHOW)
 
-        Local $iPID = 0
-
-        ; Loop until the user exits.
-        While 1
-                Switch GUIGetMsg()
-                        Case $GUI_EVENT_CLOSE, $idButton_Close
-                                ExitLoop
-
-                        Case $idButton_Notepad
-                                ; Run Notepad with the window maximized.
-                                $iPID = Run("notepad.exe", "", @SW_SHOWMAXIMIZED)
-
-                EndSwitch
-        WEnd
-
-        ; Delete the previous GUI and all controls.
-        GUIDelete($hGUI)
-
-        ; Close the Notepad process using the PID returned by Run.
-        If $iPID Then ProcessClose($iPID)
-EndFunc   ;==>Example
+    While 1
+        Switch GUIGetMsg()
+            Case $GUI_EVENT_CLOSE
+                Exit
+            Case $buttonFormatar
+                Local $valor = GUICtrlRead($inputValor)
+                ;Local $formattedValor = StringFormat("R$ %.2f", $valor)
+				Local $formattedValor = StringFormat("$%'d.%02d", $valor / 100, Mod($valor, 100))
+				MsgBox(0, 0, $formattedValor)
+            EndSwitch
+    WEnd
+EndFunc
