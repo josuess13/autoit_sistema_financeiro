@@ -38,6 +38,8 @@ Func entradas()
 	_GUICtrlListView_SetColumnWidth($tabela, 1, 385)
 	_GUICtrlListView_SetColumnWidth($tabela, 2, 100)
 
+
+
     While 1
 		Switch GUIGetMsg()
 			Case $GUI_EVENT_CLOSE
@@ -58,9 +60,7 @@ Func adicionar_receitas()
 	GUISetIcon("icones\add_round.ico")
     GUISetState()
 	GUISetBkColor(0xB0E0E6)
-	; Vírgula
-	GUICtrlCreateLabel(",", 182, 105, 30, 30)
-	GUICtrlSetFont(-1, 20, 700)
+
 	; Descrição
 	GUICtrlCreateLabel("Descrição", 80, 10, 100, 25)
 	GUICtrlSetFont(-1, 15, 700)
@@ -82,19 +82,12 @@ Func adicionar_receitas()
 	GUICtrlSetImage(-1, "icones\add.ico", 22)
 	GUICtrlSetTip(-1, "Adicionar Observação a essa entrada")
 	; Valor
-	GUICtrlCreateLabel("Valor R$", 70, 80, 100, 25)
+	GUICtrlCreateLabel("Valor R$", 90, 80, 100, 25)
 	GUICtrlSetFont(-1, 15, 700)
-	Global $valor_entrada_reais = GUICtrlCreateInput("R$ 0,00", 30, 105, 152, 30, BitOr($ES_NUMBER, $ES_RIGHT))
+	Global $valor_entrada_reais = GUICtrlCreateInput("", 30, 105, 200, 30)
 	GUICtrlSetTip(-1, "Reais")
 	GUICtrlSetFont(-1, 15, 400)
 	GUICtrlSetBkColor(-1, 0xDCDCDC)
-	;GUICtrlSetLimit($valor_entrada_reais, 7)
-	;centavos
-	Global $valor_entrada_centavos = GUICtrlCreateInput("00", 191, 105, 40, 30, $ES_NUMBER)
-	GUICtrlSetFont(-1, 15, 400)
-	GUICtrlSetBkColor(-1, 0xDCDCDC)
-	GUICtrlSetTip(-1, "Centavos")
-	GUICtrlSetLimit($valor_entrada_centavos, 2)
 	; Data
 	GUICtrlCreateLabel("Data", 275, 80, 100, 25)
 	GUICtrlSetFont(-1, 15, 700)
@@ -110,7 +103,8 @@ Func adicionar_receitas()
 	local $btn_sair = GUICtrlCreateButton("Sair", 267, 170, 109, 40)
 	GUICtrlSetFont(-1, 14, 700)
 	GUICtrlSetBkColor(-1, 0xF9FAFF)
-
+	
+	GUIRegisterMsg($WM_COMMAND, "permite_inserir_numeros_e_virgula")
 	While 1
 		switch GUIGetMsg()
 			case $GUI_EVENT_CLOSE, $btn_sair
@@ -119,7 +113,7 @@ Func adicionar_receitas()
 			case $btn_salvar
 				Local $ler_descricao = ControlGetText($tela_cadastro_receitas, "", $descricao_entrada)
 				Local $ler_salario = ControlCommand($tela_cadastro_receitas, "", $salario, "IsChecked", "")
-				Local $ler_valor = ControlGetText($tela_cadastro_receitas, "", $valor_entrada_reais) & "." & ControlGetText($tela_cadastro_receitas, "", $valor_entrada_centavos)
+				Local $ler_valor = ControlGetText($tela_cadastro_receitas, "", $valor_entrada_reais)
 				Local $ler_data = ControlGetText($tela_cadastro_receitas, "", $data_entrada)
 				Local $ler_obs = $observacao_entrada
 				adicionar_receita($ler_descricao,  $ler_valor,  $ler_data, $ler_salario, $ler_obs)
@@ -165,4 +159,25 @@ Func adicionar_observacao_entrada()
     WEnd
     ; Delete the previous GUI and all controls.
     GUIDelete($hGUI)
+EndFunc
+
+Func permite_inserir_numeros_e_virgula($hWnd, $iMsg, $iwParam, $ilParam)
+    Local $iCode = BitShift($iwParam, 16)
+    Local $iIDFrom = BitAND($iwParam, 0xFFFF)
+
+    If $iIDFrom = $valor_entrada_reais And $iCode = $EN_CHANGE Then
+        Local $content = GUICtrlRead($valor_entrada_reais)
+
+        If Not StringRegExp($content, '^[0-9]{0,7}(?:,[0-9]{0,2})?$') Then
+            $content = StringRegExpReplace($content, '[^0-9,]*', "")
+
+            If StringLen($content) > 7 Then
+                $content = StringLeft($content, 7)
+            EndIf
+        EndIf
+
+        GUICtrlSetData($valor_entrada_reais, $content)
+    EndIf
+
+    Return $GUI_RUNDEFMSG
 EndFunc

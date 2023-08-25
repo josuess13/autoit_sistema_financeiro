@@ -12,6 +12,7 @@
 #include <Date.au3>
 #include <GuiListView.au3>
 #include <ListViewConstants.au3>
+#include <WindowsConstants.au3>
 
 #include <programa.au3>
 #include <entradas.au3>
