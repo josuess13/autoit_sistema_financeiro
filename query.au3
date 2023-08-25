@@ -4,6 +4,7 @@ Func adicionar_receita($descricao, $valor, $data, $salario, $observacao = "")
 	If @error Then Exit MsgBox(0, "Adicionar Receita", "Erro ao iniciar SQLite, por favor, verifique sua DLL")
     Local $sDatabase = @ScriptDir & '\banco\banco.db'
     Local $sTableName = "entradas"
+	$valor = StringReplace($valor, ",", ".")
     Local $aNewData = [$descricao, $valor, $data, $salario, $observacao]
     ; Cria a conexão com o banco de dados
     Local $hDatabase = _SQLite_Open($sDatabase)

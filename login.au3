@@ -4,8 +4,8 @@
 #include <SQLite.au3>
 #include <SQLite.dll.au3>
 Global $msg_erro
-adicionar_receitas()
-;login()
+;adicionar_receitas()
+login()
 
 Func login()
     ; Tela de Login
