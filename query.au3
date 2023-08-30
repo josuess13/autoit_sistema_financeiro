@@ -1,5 +1,44 @@
 #include-once
 
+Func ler_dados_login()
+	_SQLite_Startup() ; chama DLL
+	If @error Then Exit MsgBox(0, "Erro", "Erro ao iniciar SQLite, por favor, verifique sua DLL")
+	; Conecta e abre o banco
+	Local $sDatabase = @ScriptDir & '\banco\banco.db'
+	Local $hDatabase = _SQLite_Open($sDatabase)
+	; Variáveis
+	Local $iRows, $iColumns, $hQuery, $sMsg
+	; Busca pelo Login
+	local $consulta_nome = "SELECT usuarios.login FROM usuarios where usuarios.login = '" & $login & "';"
+	_SQLite_Query(-1, $consulta_nome, $hQuery)
+	_SQLite_FetchData($hQuery, $iRows)
+	local $db_login = $iRows[0]
+	_SQLite_QueryFinalize($hQuery)
+	If $db_login == "" Then
+		msg_erro("Usuário ou Senha incorretos")
+		ControlClick("Login", "", $in_login, "left", 1, 199, 10)
+	Else
+		GUICtrlDelete($msg_erro)
+		; Busca pela senha
+		local $consulta_senha = "SELECT usuarios.senha FROM usuarios where usuarios.login = '" & $login & "';"
+		_SQLite_Query(-1, $consulta_senha, $hQuery)
+		_SQLite_FetchData($hQuery, $iRows)
+		local $db_senha = $iRows[0]
+		_SQLite_QueryFinalize($hQuery)
+		If $db_senha <> $senha Then
+			If $senha <> "" Then msg_erro("Usuário ou Senha incorretos")
+			ControlClick("Login", "", $in_senha, "left", 1, 199, 10)
+		Else
+			GUIDelete($tela_login)
+			tela_inicial()
+		EndIf
+	EndIf
+
+	; Fecha conexão
+	_SQLite_Close($hDatabase)
+	_SQLite_Shutdown()
+EndFunc
+
 Func adicionar_receita($descricao, $valor, $data, $salario, $observacao = "")
 	If @error Then Exit MsgBox(0, "Adicionar Receita", "Erro ao iniciar SQLite, por favor, verifique sua DLL")
     Local $sDatabase = @ScriptDir & '\banco\banco.db'

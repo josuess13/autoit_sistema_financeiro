@@ -1,14 +1,10 @@
 # AutoIt3Wrapper_UseX64 = Y
 
-;tela_inicial()
-
 Func tela_inicial()
     ; tela principal
     Local $tela_inicial = GUICreate("Seu Financeiro", 900, 600)
 	GUISetState(@SW_SHOW, $tela_inicial)
     GUISetIcon("icones\money.ico")
-
-	;GUISetState()
 
 	local $btn_receitas_inicial = GUICtrlCreateButton("RECEITAS", 10, 10, 200, 100)
 	GUICtrlSetFont(-1, 16, 800, 0, "Arial")
@@ -17,7 +13,6 @@ Func tela_inicial()
 	local $btn_despesas_inicial = GUICtrlCreateButton("DESPESAS", 10, 120, 200, 100)
 	GUICtrlSetFont($btn_despesas_inicial, 16, 800, 0, "Arial")
 	GUICtrlSetBkColor($btn_despesas_inicial, $COLOR_INDIANRED)
-
 
     ; Menu movimentos
     Local $m_movimentos = GUICtrlCreateMenu("Movimentos")
