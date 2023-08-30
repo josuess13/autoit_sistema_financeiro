@@ -72,7 +72,7 @@ Func adicionar_receitas()
 	; Salário?
 	GUICtrlCreateLabel("Salário", 240, 10, 70, 25)
 	GUICtrlSetFont(-1, 15, 700)
-	Local $salario = GUICtrlCreateCheckbox("", 270, 40, 15, 30)
+	Global $salario = GUICtrlCreateCheckbox("", 270, 40, 15, 30)
 	GUICtrlSetTip(-1, "Marque essa opção caso o valor seja referente ao salário do mês")
 	; Obs
 	GUICtrlCreateLabel("Obs.", 333, 10, 70, 25)
@@ -92,7 +92,7 @@ Func adicionar_receitas()
 	; Data
 	GUICtrlCreateLabel("Data", 275, 80, 100, 25)
 	GUICtrlSetFont(-1, 15, 700)
-	Local $data_entrada = GUICtrlCreateDate("", 240, 105, 137, 30, $DTS_SHORTDATEFORMAT)
+	Global $data_entrada = GUICtrlCreateDate("", 240, 105, 137, 30, $DTS_SHORTDATEFORMAT)
 	GUICtrlSetFont(-1, 15, 400)
 	; Botões
 	local $btn_salvar = GUICtrlCreateButton("Salvar", 30, 170, 109, 40)
@@ -104,7 +104,7 @@ Func adicionar_receitas()
 	local $btn_sair = GUICtrlCreateButton("Sair", 267, 170, 109, 40)
 	GUICtrlSetFont(-1, 14, 700)
 	GUICtrlSetBkColor(-1, 0xF9FAFF)
-	
+
 	GUIRegisterMsg($WM_COMMAND, "permite_inserir_numeros_e_virgula")
 	While 1
 		switch GUIGetMsg()
@@ -118,9 +118,12 @@ Func adicionar_receitas()
 				Local $ler_valor = ControlGetText($tela_cadastro_receitas, "", $valor_entrada_reais)
 				Local $ler_data = ControlGetText($tela_cadastro_receitas, "", $data_entrada)
 				Local $ler_obs = $observacao_entrada
-				If  $valida_dados = 0 Then adicionar_receita($ler_descricao,  $ler_valor,  $ler_data, $ler_salario, $ler_obs)
+				If  $valida_dados = 0 Then
+					adicionar_receita($ler_descricao,  $ler_valor,  $ler_data, $ler_salario, $ler_obs)
+					limpar_dados_entrada()
+				EndIf
 			case $btn_cancelar
-				MsgBox(0, "", "Cancelar") ; limpar os campos
+				limpar_dados_entrada()
 			case $btn_add_obs
 				adicionar_observacao_entrada()
 		endswitch
@@ -185,19 +188,28 @@ Func valida_dados_entrada()
 	Local $leitura_descricao = ControlGetText($tela_cadastro_receitas, "", $descricao_entrada)
 	Local $leitura_valor = ControlGetText($tela_cadastro_receitas, "", $valor_entrada_reais)
 
-	If Not StringRegExp($leitura_valor, '^\d{1,7}(?:,\d{1,2})?$') And $leitura_valor <> "" Then 
+	If Not StringRegExp($leitura_valor, '^\d{1,7}(?:,\d{1,2})?$') And $leitura_valor <> "" Then
 		MsgBox(0, "Aviso", "valor inválido. " & @CRLF & "Informe um valor no padrão 0,00 ou 00")
 		ControlFocus($tela_cadastro_receitas, "", $valor_entrada_reais)
 		$validacao_entrada = 1
-	ElseIf $leitura_descricao == "" Then 
+	ElseIf $leitura_descricao == "" Then
 		MsgBox(0, "Aviso", "Insira a descrição")
 		ControlFocus($tela_cadastro_receitas, "", $descricao_entrada)
 		$validacao_entrada = 1
-	ElseIf $leitura_valor == "" Or $leitura_valor == 0 Then 
+	ElseIf $leitura_valor == "" Or $leitura_valor == 0 Then
 		MsgBox(0, "Aviso", "Insira o valor")
 		ControlFocus($tela_cadastro_receitas, "", $valor_entrada_reais)
 		$validacao_entrada = 1
 	EndIf
 
 	Return($validacao_entrada)
+EndFunc
+
+Func limpar_dados_entrada()
+	ControlSetText($tela_cadastro_receitas, "", $descricao_entrada, "")
+	ControlCommand($tela_cadastro_receitas, "", $salario, "UnCheck")
+	ControlSetText($tela_cadastro_receitas, "", $valor_entrada_reais, "")
+	GUICtrlSetData($data_entrada, @YEAR & "/" & @MON & "/" & @MDAY)
+	$observacao_entrada = ""
+	ControlSetText("Adicionar Observação", "", $observacao_entrada, "")
 EndFunc
