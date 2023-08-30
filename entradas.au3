@@ -32,13 +32,19 @@ Func entradas()
 	GUICtrlSetFont(-1, 9, 700)
 
 	; Exibir entradas
-	Local $tabela = GUICtrlCreateListView("Valor|Entrada|Data", 160, 30, 590, 432, $LVS_EDITLABELS)
-	Local $tabela_valor = GUICtrlCreateListViewItem("R$ 1.200,00|Salário Agosto|01/08/2021", $tabela)
+	Local $tabela = GUICtrlCreateListView("Valor|Descrição|Data", 160, 30, 590, 432, $LVS_EDITLABELS)
 	_GUICtrlListView_SetColumnWidth($tabela, 0, 100)
 	_GUICtrlListView_SetColumnWidth($tabela, 1, 385)
 	_GUICtrlListView_SetColumnWidth($tabela, 2, 100)
 
+	Local $sDatabase = @ScriptDir & '\banco\banco.db'
+	Local $hDatabase = _SQLite_Open($sDatabase)
+	Local $aResult, $iRows, $aNames
+	Local $ler_tabela_entradas = _SQLite_GetTableData2D($hDatabase, "SELECT entradas.valor, entradas.descricao, entradas.data FROM entradas;", $aResult, $iRows, $aNames)
 
+	For $i = 0 To $iRows -1
+		GUICtrlCreateListViewItem($aResult[$i][0] & "|" & $aResult[$i][1] & "|" & $aResult[$i][2] & "|", $tabela)
+	Next
 
     While 1
 		Switch GUIGetMsg()

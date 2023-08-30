@@ -1,32 +1,49 @@
-#include <GUIConstantsEx.au3>
-#include <WindowsConstants.au3>
-#include <EditConstants.au3>
+#include <MsgBoxConstants.au3>
+#include <SQLite.au3>
+#include <SQLite.dll.au3>
 
-Opt("GUIOnEventMode", 1)
+Local $aResult, $iRows, $aNames, $iRval
 
-Local $hGUI = GUICreate("Mover Foco ao Pressionar Enter", 300, 150)
+_SQLite_Startup()
+If @error Then
+        MsgBox($MB_SYSTEMMODAL, "SQLite Error", "SQLite.dll Can't be Loaded!")
+        Exit -1
+EndIf
+ConsoleWrite("_SQLite_LibVersion=" & _SQLite_LibVersion() & @CRLF)
+_SQLite_Open() ; Open a :memory: database
+If @error Then
+        MsgBox($MB_SYSTEMMODAL, "SQLite Error", "Can't Load Database!")
+        Exit -1
+EndIf
 
-Local $input1 = GUICtrlCreateInput("", 50, 30, 200, 24)
-Local $input2 = GUICtrlCreateInput("", 50, 70, 200, 24)
+; Example Table
+; Name        | Age
+; -----------------------
+; Alice       | 43
+; Bob         | 28
+; Cindy       | 21
 
-GUISetState()
+If Not _SQLite_Exec(-1, "CREATE TEMP TABLE persons (Name, Age);") = $SQLITE_OK Then _
+                MsgBox($MB_SYSTEMMODAL, "SQLite Error", _SQLite_ErrMsg())
+If Not _SQLite_Exec(-1, "INSERT INTO persons VALUES ('Alice','43');") = $SQLITE_OK Then _
+                MsgBox($MB_SYSTEMMODAL, "SQLite Error", _SQLite_ErrMsg())
+If Not _SQLite_Exec(-1, "INSERT INTO persons VALUES ('Bob','28');") = $SQLITE_OK Then _
+                MsgBox($MB_SYSTEMMODAL, "SQLite Error", _SQLite_ErrMsg())
+If Not _SQLite_Exec(-1, "INSERT INTO persons VALUES ('Cindy','21');") = $SQLITE_OK Then _
+                MsgBox($MB_SYSTEMMODAL, "SQLite Error", _SQLite_ErrMsg())
 
-GUIRegisterMsg($WM_COMMAND, '_WM_COMMAND')
-GUISetOnEvent($GUI_EVENT_CLOSE, "_Exit")
+$iRval = _SQLite_GetTableData2D(-1, "SELECT * FROM persons;", $aResult, $iRows, $aNames)
+If $iRval = $SQLITE_OK Then
+        _SQLite_Display2DResult($aResult)
 
-While 1
-    Sleep(10)
-WEnd
+        ; $aResult looks like this:
+        ; Alice  43
+        ; Bob    28
+        ; Cindy  21
 
-Func _WM_COMMAND($hWnd, $Msg, $wParam, $lParam)
-    Local $id = BitAND($wParam, 0x0000FFFF)
-    Local $code = BitShift($wParam, 16)
-    If $id = $input1 And $code = $EN_CHANGE Then
-        ControlFocus($hGUI, "", $input2)
-    EndIf
-    Return $GUI_RUNDEFMSG
-EndFunc
+Else
+        MsgBox($MB_SYSTEMMODAL, "SQLite Error: " & $iRval, _SQLite_ErrMsg())
+EndIf
 
-Func _Exit()
-    Exit
-EndFunc
+_SQLite_Close()
+_SQLite_Shutdown()
