@@ -2,7 +2,7 @@
 Global $observacao_entrada = ""
 
 Func entradas()
-    Local $tela_entradas = GUICreate("Receitas", 800, 500)
+    Local $tela_entradas = GUICreate("Receitas", 800, 520)
     GUISetIcon("icones\entradas.ico")
     GUISetState()
     ; Botão Adicionar
@@ -28,23 +28,17 @@ Func entradas()
 	Local $data_fim = GUICtrlCreateDate("", 20, 330, 120, 20, $DTS_SHORTDATEFORMAT)
 	Local $btn_filtrar = GUICtrlCreateButton("Filtrar", 20, 360, 120, 40)
 	GUICtrlSetFont(-1, 9, 700)
-	Local $limpar_filtros = GUICtrlCreateButton("Limpar Filtros", 20, 425, 120, 40)
+	Local $limpar_filtros = GUICtrlCreateButton("Limpar Filtros", 20, 400, 120, 40)
 	GUICtrlSetFont(-1, 9, 700)
 
-	; Exibir entradas
-	Local $tabela = GUICtrlCreateListView("Valor|Descrição|Data", 160, 30, 590, 432, $LVS_EDITLABELS)
-	_GUICtrlListView_SetColumnWidth($tabela, 0, 100)
-	_GUICtrlListView_SetColumnWidth($tabela, 1, 385)
-	_GUICtrlListView_SetColumnWidth($tabela, 2, 100)
+	Local $btn_Atualizar_receitas = GUICtrlCreateButton("Atualizar", 20, 470, 120, 40)
+	GUICtrlSetFont(-1, 9, 700)
 
-	Local $sDatabase = @ScriptDir & '\banco\banco.db'
-	Local $hDatabase = _SQLite_Open($sDatabase)
-	Local $aResult, $iRows, $aNames
-	Local $ler_tabela_entradas = _SQLite_GetTableData2D($hDatabase, "SELECT entradas.valor, entradas.descricao, entradas.data FROM entradas;", $aResult, $iRows, $aNames)
+	Local $label_valor_total_entradas = GUICtrlCreateLabel("Total:", 160, 470, 200, 20)
+	GUICtrlSetFont(-1, 12, 700)
 
-	For $i = 0 To $iRows -1
-		GUICtrlCreateListViewItem($aResult[$i][0] & "|" & $aResult[$i][1] & "|" & $aResult[$i][2] & "|", $tabela)
-	Next
+	exibir_entradas_grid()
+
 
     While 1
 		Switch GUIGetMsg()
@@ -56,7 +50,8 @@ Func entradas()
                 adicionar_receitas()
                 GUISetState(@SW_ENABLE, $tela_entradas)
                 WinActivate($tela_entradas)
-
+			Case $btn_Atualizar_receitas
+				exibir_entradas_grid()
 		EndSwitch
 	WEnd
 EndFunc

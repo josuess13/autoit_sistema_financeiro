@@ -63,3 +63,32 @@ Func adicionar_receita($descricao, $valor, $data, $salario, $observacao = "")
     ; Fecha a conexão com o banco de dados
     _SQLite_Close($hDatabase)
 EndFunc
+
+Func exibir_entradas_grid()
+	; Exibir entradas
+	Local $tabela = GUICtrlCreateListView(" VALOR | DESCRIÇÃO | DATA ", 160, 30, 590, 432, BitOR($LVS_REPORT, $LVS_SHOWSELALWAYS));$LVS_EDITLABELS)
+	_GUICtrlListView_SetColumnWidth($tabela, 0, 100)
+	_GUICtrlListView_SetColumn($tabela, 0, "VALOR", -1, 1)
+	_GUICtrlListView_SetColumnWidth($tabela, 1, 385)
+	_GUICtrlListView_SetColumnWidth($tabela, 2, 100)
+
+	_GUICtrlListView_SetExtendedListViewStyle($tabela, BitOR($LVS_EX_GRIDLINES, $LVS_EX_FLATSB, $LVS_EX_HEADERDRAGDROP ))
+	_GUICtrlListView_SetTextBkColor($tabela, 0xE0E0E0)
+	_GUICtrlListView_SetBkColor($tabela, 0xFFFFFF)
+	_GUICtrlListView_SetTextColor($tabela, 0x000000)
+
+	Local $sDatabase = @ScriptDir & '\banco\banco.db'
+	Local $hDatabase = _SQLite_Open($sDatabase)
+	Local $aResult, $iRows, $aNames
+	Local $ler_tabela_entradas = _SQLite_GetTableData2D($hDatabase, "SELECT entradas.valor, entradas.descricao, entradas.data FROM entradas;", $aResult, $iRows, $aNames)
+
+	For $i = 0 To $iRows -1
+		GUICtrlCreateListViewItem($aResult[$i][0] & "|" & $aResult[$i][1] & "|" & $aResult[$i][2] & "|", $tabela)
+	Next
+
+	Local $somar_total_de_entradas = _SQLite_GetTableData2D($hDatabase, "SELECT SUM(entradas.valor) FROM entradas;", $aResult, $iRows, $aNames)
+	Local $label_valor_total_entradas = GUICtrlCreateLabel("Total: " & $aResult[0][0], 160, 470, 200, 20)
+	GUICtrlSetFont(-1, 12, 700)
+
+	_SQLite_Close($hDatabase)
+EndFunc
