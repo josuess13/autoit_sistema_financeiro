@@ -40,7 +40,6 @@ Func login()
 				Global $login = GUICtrlRead($in_login)
 				Global $senha = GUICtrlRead($in_senha)
 				ler_dados_login()
-
         EndSwitch
     WEnd
     GUIDelete($tela_login)
