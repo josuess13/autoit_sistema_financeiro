@@ -39,7 +39,7 @@ Func login()
 			Case $entrar
 				Global $login = GUICtrlRead($in_login)
 				Global $senha = GUICtrlRead($in_senha)
-				ler_dados_login()
+				valida_login()
         EndSwitch
     WEnd
     GUIDelete($tela_login)

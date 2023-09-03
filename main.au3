@@ -8,11 +8,11 @@ Func tela_inicial()
 
 	local $btn_receitas_inicial = GUICtrlCreateButton("RECEITAS", 10, 10, 200, 100)
 	GUICtrlSetFont(-1, 16, 800, 0, "Arial")
-	GUICtrlSetBkColor(-1, $COLOR_MEDIUMSEAGREEN)
+	GUICtrlSetBkColor(-1, 0x3CB371)
 
 	local $btn_despesas_inicial = GUICtrlCreateButton("DESPESAS", 10, 120, 200, 100)
 	GUICtrlSetFont($btn_despesas_inicial, 16, 800, 0, "Arial")
-	GUICtrlSetBkColor($btn_despesas_inicial, $COLOR_INDIANRED)
+	GUICtrlSetBkColor($btn_despesas_inicial, 0xCD5C5C)
 
     ; Menu movimentos
     Local $m_movimentos = GUICtrlCreateMenu("Movimentos")
@@ -20,6 +20,16 @@ Func tela_inicial()
     Local $m_movimentos_entradas = GUICtrlCreateMenuItem("Receitas", $m_movimentos)
     Local $m_movimentos_saidas = GUICtrlCreateMenuItem("Despesas", $m_movimentos)
 	$plano_fundo = GUICtrlCreatePic(@ScriptDir & "\icones\plano_fundo.jpg", 0, 0, 900, 600)
+
+	;Mostra usuário logado
+	conecta_e_inicia_banco()
+	Local $aResult, $iRows, $aNames
+	Local $consultar_usuario_logado = _SQLite_GetTableData2D($hDatabase, "SELECT configuracoes.usuario_logado FROM configuracoes;", $aResult, $iRows, $aNames)
+	Local $mostrar_usuario_logado = GUICtrlCreateLabel("   Usuário: " & $aResult[0][0], 745, 560, 150, 20)
+	GUICtrlSetColor(-1, 0x228B22)
+	GUICtrlSetFont(-1, 12, 700)
+	desconecta_e_fecha_banco()
+
     While 1
         Switch GUIGetMsg()
             Case $GUI_EVENT_CLOSE
