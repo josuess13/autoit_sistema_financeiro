@@ -87,7 +87,7 @@ Func exibir_entradas_grid()
 	_GUICtrlListView_SetColumnWidth($tabela, 2, 100)
 	_GUICtrlListView_SetColumnWidth($tabela, 4, 300)
 
-	_GUICtrlListView_SetExtendedListViewStyle($tabela, BitOR($LVS_EX_GRIDLINES, $LVS_EX_FLATSB, $LVS_EX_HEADERDRAGDROP ))
+	_GUICtrlListView_SetExtendedListViewStyle($tabela, BitOR($LVS_EX_GRIDLINES, $LVS_EX_FLATSB, $LVS_EX_FULLROWSELECT))
 	_GUICtrlListView_SetTextBkColor($tabela, 0xE0E0E0)
 	_GUICtrlListView_SetBkColor($tabela, 0xFFFFFF)
 	_GUICtrlListView_SetTextColor($tabela, 0x000000)
