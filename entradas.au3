@@ -1,6 +1,4 @@
-# AutoIt3Wrapper_UseX64 = Y
 Global $observacao_entrada = ""
-
 Func entradas()
     Local $tela_entradas = GUICreate("Receitas", 800, 520)
     GUISetIcon("icones\entradas.ico")
