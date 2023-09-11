@@ -35,7 +35,7 @@ Func saidas()
 	Local $label_valor_total_entradas = GUICtrlCreateLabel("Total:", 160, 470, 200, 20)
 	GUICtrlSetFont(-1, 12, 700)
 
-	;exibir_saidas_grid()
+	exibir_saidas_grid()
 
     While 1
 		Switch GUIGetMsg()
@@ -48,7 +48,7 @@ Func saidas()
                 GUISetState(@SW_ENABLE, $tela_saidas)
                 WinActivate($tela_saidas)
 			Case $btn_Atualizar_despesas
-				exibir_entradas_grid()
+				exibir_saidas_grid()
 		EndSwitch
 	WEnd
 EndFunc
@@ -117,7 +117,7 @@ Func adicionar_despesas()
 				Local $ler_data = ControlGetText($tela_cadastro_despesas, "", $data_saida)
 				Local $ler_obs = $observacao_saida
 				If  $valida_dados = 0 Then
-					;adicionar_despesa($ler_descricao,  $ler_valor,  $ler_data, $ler_fixo, $ler_obs)
+					adicionar_despesa($ler_descricao,  $ler_valor, $ler_data, $ler_fixo, $ler_obs)
 					limpar_dados_saida()
 				EndIf
 			case $btn_cancelar
@@ -207,7 +207,7 @@ Func limpar_dados_saida()
 	ControlSetText($tela_cadastro_despesas, "", $descricao_saida, "")
 	ControlCommand($tela_cadastro_despesas, "", $gasto_fixo, "UnCheck")
 	ControlSetText($tela_cadastro_despesas, "", $valor_saida_reais, "")
-	GUICtrlSetData($data_entrada, @YEAR & "/" & @MON & "/" & @MDAY)
+	GUICtrlSetData($data_saida, @YEAR & "/" & @MON & "/" & @MDAY)
 	$observacao_saida = ""
 	ControlSetText("Adicionar Observação", "", $observacao_saida, "")
 EndFunc
