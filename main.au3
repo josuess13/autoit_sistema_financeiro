@@ -1,16 +1,18 @@
 # AutoIt3Wrapper_UseX64 = Y
 
 Func tela_inicial()
+	HotKeySet("r",  "entrar_receitas")
+	HotKeySet("d",  "entrar_despesas")
     ; tela principal
-    Local $tela_inicial = GUICreate("Seu Financeiro", 900, 600)
+    Global $tela_inicial = GUICreate("Seu Financeiro", 900, 600)
 	GUISetState(@SW_SHOW, $tela_inicial)
     GUISetIcon("icones\money.ico")
 
-	local $btn_receitas_inicial = GUICtrlCreateButton("RECEITAS", 10, 10, 200, 100)
+	local $btn_receitas_inicial = GUICtrlCreateButton("RECEITAS (R)", 10, 10, 200, 100)
 	GUICtrlSetFont(-1, 16, 800, 0, "Arial")
 	GUICtrlSetBkColor(-1, 0x3CB371)
 
-	local $btn_despesas_inicial = GUICtrlCreateButton("DESPESAS", 10, 120, 200, 100)
+	local $btn_despesas_inicial = GUICtrlCreateButton("DESPESAS (D)", 10, 120, 200, 100)
 	GUICtrlSetFont($btn_despesas_inicial, 16, 800, 0, "Arial")
 	GUICtrlSetBkColor($btn_despesas_inicial, 0xCD5C5C)
 
@@ -58,4 +60,16 @@ Func tela_inicial()
     WEnd
     GUIDelete($tela_inicial)
     Exit
+EndFunc
+
+Func entrar_receitas()
+	HotKeySet("r")
+	entradas()
+	HotKeySet("r",  "entrar_receitas")
+EndFunc
+
+Func entrar_despesas()
+	HotKeySet("d")
+	saidas()
+	HotKeySet("d",  "entrar_despesas")
 EndFunc
