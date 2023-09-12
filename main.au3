@@ -4,7 +4,7 @@ Func tela_inicial()
 	HotKeySet("r",  "entrar_receitas")
 	HotKeySet("d",  "entrar_despesas")
     ; tela principal
-    Global $tela_inicial = GUICreate("Seu Financeiro", 900, 600)
+    Global $tela_inicial = GUICreate("Nosso Financeiro", 900, 600)
 	GUISetState(@SW_SHOW, $tela_inicial)
     GUISetIcon("icones\money.ico")
 

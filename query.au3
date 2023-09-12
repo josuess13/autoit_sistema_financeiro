@@ -37,7 +37,13 @@ Func valida_login()
 	local $senha_no_db = $iRows[0]
 	_SQLite_QueryFinalize($hQuery)
 
-	If $usuario_no_db <> $login Or $senha_no_db <> $senha Then
+	If $login == "" Then 
+		msg_erro("Preencha o Usuário")
+		ControlClick("Login", "", $in_login, "left", 1, 199, 10)
+	ElseIf $senha == "" Then 
+		msg_erro("Preencha a Senha")
+		ControlClick("Login", "", $in_senha, "left", 1, 199, 10)
+	ElseIf $usuario_no_db <> $login Or $senha_no_db <> $senha Then
 		msg_erro("Usuário ou Senha incorretos")
 		ControlClick("Login", "", $in_senha, "left", 1, 199, 10)
 	Else
