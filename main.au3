@@ -16,6 +16,10 @@ Func tela_inicial()
 	GUICtrlSetFont($btn_despesas_inicial, 16, 800, 0, "Arial")
 	GUICtrlSetBkColor($btn_despesas_inicial, 0xCD5C5C)
 
+	local $btn_investimentos = GUICtrlCreateButton("INVESTIMENTOS (I)", 10, 230, 200, 100)
+	GUICtrlSetFont($btn_investimentos, 16, 800, 0, "Arial")
+	GUICtrlSetBkColor($btn_investimentos, 0xFDF5E6)
+
     ; Menu movimentos
     Local $m_movimentos = GUICtrlCreateMenu("Movimentos")
     ;GUICtrlSetState($m_movimentos, $GUI_DEFBUTTON)
@@ -56,6 +60,11 @@ Func tela_inicial()
                 saidas()
                 GUISetState(@SW_ENABLE, $tela_inicial)
                 WinActivate($tela_inicial)
+			Case $btn_investimentos
+				GUISetState(@SW_DISABLE, $tela_inicial)
+				investimentos()
+				GUISetState(@SW_ENABLE, $tela_inicial)
+				WinActivate($tela_inicial)
         EndSwitch
     WEnd
     GUIDelete($tela_inicial)
