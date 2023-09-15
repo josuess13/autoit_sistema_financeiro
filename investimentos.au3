@@ -5,14 +5,18 @@ Func investimentos()
     GUISetState()
 
 	Local $btn_editar_metas = GUICtrlCreateButton("Editar Metas", 20, 30, 120, 40)
-	GUICtrlSetFont($btn_editar_metas, 13, 700)
+	GUICtrlSetFont(-1, 13, 700)
 
 	Local $btn_investimentos_ano = GUICtrlCreateButton("Inv. Ano", 20, 80, 120, 40)
-	GUICtrlSetFont($btn_investimentos_ano, 13, 700)
+	GUICtrlSetFont(-1, 13, 700)
 
 	Local $btn_investimentos_total = GUICtrlCreateButton("Inv. Total", 20, 130, 120, 40)
-	GUICtrlSetFont($btn_investimentos_total, 13, 700)
+	GUICtrlSetFont(-1, 13, 700)
 
+	Local $btn_gravar = GUICtrlCreateButton("Gravar", 660, 470, 120, 40)
+	GUICtrlSetFont(-1, 13, 700)
+
+	$entrada_mes = consultar_entradas_mes()
 
 	; grid
 	Local $tabela = GUICtrlCreateListView(" META | % | VALOR DO MÊS ", 160, 30, 355, 432, BitOR($LVS_REPORT, $LVS_SHOWSELALWAYS));$LVS_EDITLABELS)

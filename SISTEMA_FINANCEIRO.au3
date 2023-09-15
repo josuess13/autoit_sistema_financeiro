@@ -1,5 +1,5 @@
 #include <includes.au3>
 
-;login()
+login()
 
-investimentos()
+;investimentos()

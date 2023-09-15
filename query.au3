@@ -160,3 +160,14 @@ Func exibir_saidas_grid()
 
 	desconecta_e_fecha_banco()
 EndFunc
+
+Func consultar_entradas_mes()
+	Local $aResult, $iRows, $aNames
+	conecta_e_inicia_banco()
+
+	Local $entradas_mes = _SQLite_GetTableData2D($hDatabase, "SELECT sum(e.valor) from entradas e where substr(data, 4, 2) = '"& @MON &"' AND substr(data, 7, 4) = '"& @YEAR &"';", $aResult, $iRows, $aNames)
+	Local $btn_entradas_mes = GUICtrlCreateLabel("Total: " & $aResult[0][0], 660, 20, 120, 20)
+	GUICtrlSetFont(-1, 12, 700)
+
+	desconecta_e_fecha_banco()
+EndFunc
