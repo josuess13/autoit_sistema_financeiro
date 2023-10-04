@@ -221,30 +221,36 @@ Func exibir_metas_grid()
 EndFunc
 
 Func gravar_investimentos()
+	Local $entradas_mes = consultar_entradas_mes()
 	conecta_e_inicia_banco()
 
 	Local $sSQL = "SELECT metas.id, metas.porcentagem FROM metas;"
 	Local $aResult, $iRows, $iCols
+	Local $aResult1, $iRows1, $iCols1
 	If _SQLite_GetTable2d($hDatabase, $sSQL, $aResult, $iRows, $iCols) = $SQLITE_OK Then
 		If $iRows > 0 Then
 			; Itera pelos resultados
 			For $i = 1 To $iRows
-				ConsoleWrite("ID: " & $aResult[$i][0] & ", Porcentagem: " & $aResult[$i][1] & @CRLF)
+				Local $valor = $entradas_mes * ($aResult[$i][1]/100)
+				Local $data = @MON & @YEAR
+				Local $meta_id = $aResult[$i][0]
+				Local $sSQLExists = "SELECT count(*)  FROM investidos WHERE data = "& $data &" AND meta_id = "& $meta_id &";"
+				_SQLite_GetTable2d($hDatabase, $sSQLExists, $aResult1, $iRows1, $iCols1)
+				Local $existe =  $aResult1[1][0]
+				If $existe == 0 Then
+					$sSQL = "INSERT INTO investidos (valor, data, meta_id) VALUES ('" & $valor & "', '" & $data & "', '" & $meta_id & "');"
+				Else
+					$sSQL = "UPDATE investidos SET valor = " & $valor & " WHERE data = " & $data & " AND meta_id = " & $meta_id & ";"
+				EndIf
+				_SQLite_Exec($hDatabase, $sSQL)
 			Next
 		EndIf
 	EndIf
-	; -----------------
-
-	;~ For $i = 0 To $iRows -1
-	;~ 	; Cria a consulta SQL para inserção de dados
-	;~ 	$valor = $entradas_mes*($aResult[$i][1]/100)
-	;~ 	$data = @MON & @YEAR
-	;~ 	$meta_id = $aResult[$i][0]
-	;~ 	MsgBox(0, "0", $valor & " - " & $data & " - " & $meta_id)
-	;~ 	;$sSQL = "INSERT INTO investidos (valor, data, meta_id) VALUES ('" & $valor & "', '" & $data & "', '" & $meta_id & "');"
-	;~ 	; Executa a consulta
-	;~ 	;_SQLite_Exec($hDatabase, $sSQL)
-	;~ Next
+	If @error Then
+        MsgBox($MB_ICONERROR, "Erro", "Erro ao inserir dados na tabela.")
+    Else
+        MsgBox($MB_ICONINFORMATION, "Sucesso", "Dados gravados com sucesso!")
+    EndIf
 
     ; Fecha a conexão com o banco de dados
     desconecta_e_fecha_banco()
