@@ -14,7 +14,7 @@ Func desconecta_e_fecha_banco()
 	_SQLite_Close($hDatabase)
 	_SQLite_Shutdown()
 EndFunc
-
+; ++++++++++++++++++++++++++++++++++++++++++++++++++ LOGIN +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Func valida_login()
 	conecta_e_inicia_banco()
 
@@ -37,10 +37,10 @@ Func valida_login()
 	local $senha_no_db = $iRows[0]
 	_SQLite_QueryFinalize($hQuery)
 
-	If $login == "" Then 
+	If $login == "" Then
 		msg_erro("Preencha o Usuário")
 		ControlClick("Login", "", $in_login, "left", 1, 199, 10)
-	ElseIf $senha == "" Then 
+	ElseIf $senha == "" Then
 		msg_erro("Preencha a Senha")
 		ControlClick("Login", "", $in_senha, "left", 1, 199, 10)
 	ElseIf $usuario_no_db <> $login Or $senha_no_db <> $senha Then
@@ -63,7 +63,7 @@ Func usuario_logado($usuario_logado)
     If @error Then MsgBox($MB_ICONERROR, "Erro", "Erro ao inserir dados na tabela.")
 	desconecta_e_fecha_banco()
 EndFunc
-
+; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ENTRADAS +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Func adicionar_receita($descricao, $valor, $data, $salario, $observacao = "")
 	conecta_e_inicia_banco()
@@ -89,7 +89,7 @@ Func exibir_entradas_grid()
 	Local $tabela = GUICtrlCreateListView(" VALOR | DESCRIÇÃO | DATA  | ADICIONADO POR | OBSERVAÇÃO ", 160, 30, 590, 432, BitOR($LVS_REPORT, $LVS_SHOWSELALWAYS));$LVS_EDITLABELS)
 	_GUICtrlListView_SetColumnWidth($tabela, 0, 100)
 	_GUICtrlListView_SetColumn($tabela, 0, "VALOR", -1, 1)
-	_GUICtrlListView_SetColumnWidth($tabela, 1, 300)
+	_GUICtrlListView_SetColumnWidth($tabela, 1, 200)
 	_GUICtrlListView_SetColumnWidth($tabela, 2, 100)
 	_GUICtrlListView_SetColumnWidth($tabela, 4, 300)
 
@@ -103,7 +103,7 @@ Func exibir_entradas_grid()
 	Local $ler_tabela_entradas = _SQLite_GetTableData2D($hDatabase, "SELECT entradas.valor, entradas.descricao, entradas.data, entradas.adicionado_por, entradas.observacao FROM entradas;", $aResult, $iRows, $aNames)
 
 	For $i = 0 To $iRows -1
-		GUICtrlCreateListViewItem($aResult[$i][0] & "|" & $aResult[$i][1] & "|" & $aResult[$i][2] & "|" & $aResult[$i][3] & "|" & $aResult[$i][4] & "|", $tabela)
+		GUICtrlCreateListViewItem("R$ " & $aResult[$i][0] & "|" & $aResult[$i][1] & "|" & $aResult[$i][2] & "|" & $aResult[$i][3] & "|" & $aResult[$i][4] & "|", $tabela)
 	Next
 
 	Local $somar_total_de_entradas = _SQLite_GetTableData2D($hDatabase, "SELECT SUM(entradas.valor) FROM entradas;", $aResult, $iRows, $aNames)
@@ -112,7 +112,7 @@ Func exibir_entradas_grid()
 
 	desconecta_e_fecha_banco()
 EndFunc
-
+; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ SAÍDAS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Func adicionar_despesa($descricao, $valor, $data, $fixo, $observacao = "")
 	conecta_e_inicia_banco()
 	$valor = StringReplace($valor, ",", ".")
@@ -137,7 +137,7 @@ Func exibir_saidas_grid()
 	Local $tabela = GUICtrlCreateListView(" VALOR | DESCRIÇÃO | DATA  | ADICIONADO POR | OBSERVAÇÃO ", 160, 30, 590, 432, BitOR($LVS_REPORT, $LVS_SHOWSELALWAYS));$LVS_EDITLABELS)
 	_GUICtrlListView_SetColumnWidth($tabela, 0, 100)
 	_GUICtrlListView_SetColumn($tabela, 0, "VALOR", -1, 1)
-	_GUICtrlListView_SetColumnWidth($tabela, 1, 300)
+	_GUICtrlListView_SetColumnWidth($tabela, 1, 200)
 	_GUICtrlListView_SetColumnWidth($tabela, 2, 100)
 	_GUICtrlListView_SetColumnWidth($tabela, 4, 300)
 
@@ -151,7 +151,7 @@ Func exibir_saidas_grid()
 	Local $ler_tabela_saidas = _SQLite_GetTableData2D($hDatabase, "SELECT saidas.valor, saidas.descricao, saidas.data, saidas.adicionado_por, saidas.observacao FROM saidas;", $aResult, $iRows, $aNames)
 
 	For $i = 0 To $iRows -1
-		GUICtrlCreateListViewItem($aResult[$i][0] & "|" & $aResult[$i][1] & "|" & $aResult[$i][2] & "|" & $aResult[$i][3] & "|" & $aResult[$i][4] & "|", $tabela)
+		GUICtrlCreateListViewItem("R$ " & $aResult[$i][0] & "|" & $aResult[$i][1] & "|" & $aResult[$i][2] & "|" & $aResult[$i][3] & "|" & $aResult[$i][4] & "|", $tabela)
 	Next
 
 	Local $somar_total_de_saidas = _SQLite_GetTableData2D($hDatabase, "SELECT SUM(saidas.valor) FROM saidas;", $aResult, $iRows, $aNames)
@@ -160,7 +160,7 @@ Func exibir_saidas_grid()
 
 	desconecta_e_fecha_banco()
 EndFunc
-
+ ; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ INVESTIMENTOS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Func consultar_entradas_mes()
 	Local $aResult, $iRows, $aNames
 	conecta_e_inicia_banco()
@@ -170,4 +170,82 @@ Func consultar_entradas_mes()
 	GUICtrlSetFont(-1, 12, 700)
 
 	desconecta_e_fecha_banco()
+	Return $aResult[0][0]
+EndFunc
+
+Func adicionar_meta($nome, $porcentagem)
+	conecta_e_inicia_banco()
+	$porcentagem = StringReplace($porcentagem, ",", ".")
+	Local $aResult, $iRows, $aNames
+
+    ; Cria a consulta SQL para inserção de dados
+    $sSQL = "INSERT INTO metas (nome, porcentagem) VALUES ('" & $nome & "', '" & $porcentagem & "');"
+    ; Executa a consulta
+    _SQLite_Exec($hDatabase, $sSQL)
+    If @error Then
+        MsgBox($MB_ICONERROR, "Erro", "Erro ao inserir dados na tabela.")
+    Else
+        MsgBox($MB_ICONINFORMATION, "Sucesso", "Dados gravados com sucesso!")
+    EndIf
+    ; Fecha a conexão com o banco de dados
+    desconecta_e_fecha_banco()
+EndFunc
+
+Func exibir_metas_grid()
+	Local $entradas_mes = consultar_entradas_mes()
+	; Exibir metas
+	Local $tabela = GUICtrlCreateListView("ID | META | % | VALOR DO MÊS ", 170, 30, 380, 432, BitOR($LVS_REPORT, $LVS_SHOWSELALWAYS))
+	_GUICtrlListView_SetColumnWidth($tabela, 0, 40)
+	_GUICtrlListView_SetColumnWidth($tabela, 1, 180)
+	_GUICtrlListView_SetColumnWidth($tabela, 2, 50)
+	_GUICtrlListView_SetColumnWidth($tabela, 3, 100)
+
+	_GUICtrlListView_SetExtendedListViewStyle($tabela, BitOR($LVS_EX_GRIDLINES, $LVS_EX_FLATSB, $LVS_EX_FULLROWSELECT))
+	_GUICtrlListView_SetTextBkColor($tabela, 0xE0E0E0)
+	_GUICtrlListView_SetBkColor($tabela, 0xFFFFFF)
+	_GUICtrlListView_SetTextColor($tabela, 0x000000)
+
+	conecta_e_inicia_banco()
+	Local $aResult, $iRows, $aNames
+	Local $ler_tabela_metas = _SQLite_GetTableData2D($hDatabase, "SELECT metas.id, metas.nome, metas.porcentagem FROM metas;", $aResult, $iRows, $aNames)
+
+	For $i = 0 To $iRows -1
+		GUICtrlCreateListViewItem($aResult[$i][0] & "|" & $aResult[$i][1] & "|" & $aResult[$i][2] & "|" & "R$ " & $entradas_mes*($aResult[$i][2]/100) & "|", $tabela)
+	Next
+
+	;~ Local $somar_total_de_saidas = _SQLite_GetTableData2D($hDatabase, "SELECT SUM(saidas.valor) FROM saidas;", $aResult, $iRows, $aNames)
+	;~ Local $label_valor_total_saidas = GUICtrlCreateLabel("Total: " & $aResult[0][0], 160, 470, 200, 20)
+	;~ GUICtrlSetFont(-1, 12, 700)
+
+	desconecta_e_fecha_banco()
+EndFunc
+
+Func gravar_investimentos()
+	conecta_e_inicia_banco()
+
+	Local $sSQL = "SELECT metas.id, metas.porcentagem FROM metas;"
+	Local $aResult, $iRows, $iCols
+	If _SQLite_GetTable2d($hDatabase, $sSQL, $aResult, $iRows, $iCols) = $SQLITE_OK Then
+		If $iRows > 0 Then
+			; Itera pelos resultados
+			For $i = 1 To $iRows
+				ConsoleWrite("ID: " & $aResult[$i][0] & ", Porcentagem: " & $aResult[$i][1] & @CRLF)
+			Next
+		EndIf
+	EndIf
+	; -----------------
+
+	;~ For $i = 0 To $iRows -1
+	;~ 	; Cria a consulta SQL para inserção de dados
+	;~ 	$valor = $entradas_mes*($aResult[$i][1]/100)
+	;~ 	$data = @MON & @YEAR
+	;~ 	$meta_id = $aResult[$i][0]
+	;~ 	MsgBox(0, "0", $valor & " - " & $data & " - " & $meta_id)
+	;~ 	;$sSQL = "INSERT INTO investidos (valor, data, meta_id) VALUES ('" & $valor & "', '" & $data & "', '" & $meta_id & "');"
+	;~ 	; Executa a consulta
+	;~ 	;_SQLite_Exec($hDatabase, $sSQL)
+	;~ Next
+
+    ; Fecha a conexão com o banco de dados
+    desconecta_e_fecha_banco()
 EndFunc

@@ -1,8 +1,8 @@
 # AutoIt3Wrapper_UseX64 = Y
 
 Func tela_inicial()
-	HotKeySet("r",  "entrar_receitas")
-	HotKeySet("d",  "entrar_despesas")
+	;HotKeySet("r",  "entrar_receitas")
+	;HotKeySet("d",  "entrar_despesas")
     ; tela principal
     Global $tela_inicial = GUICreate("Nosso Financeiro", 900, 600)
 	GUISetState(@SW_SHOW, $tela_inicial)
