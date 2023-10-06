@@ -11,8 +11,8 @@ EndFunc
 
 Func desconecta_e_fecha_banco()
 	; Fecha conexão
-	_SQLite_Close($hDatabase)
 	_SQLite_Shutdown()
+	_SQLite_Close($hDatabase)
 EndFunc
 ; ++++++++++++++++++++++++++++++++++++++++++++++++++ LOGIN +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Func valida_login()
@@ -194,23 +194,23 @@ EndFunc
 Func exibir_metas_grid()
 	Local $entradas_mes = consultar_entradas_mes()
 	; Exibir metas
-	Local $tabela = GUICtrlCreateListView("ID | META | % | VALOR DO MÊS ", 170, 30, 380, 432, BitOR($LVS_REPORT, $LVS_SHOWSELALWAYS))
-	_GUICtrlListView_SetColumnWidth($tabela, 0, 40)
-	_GUICtrlListView_SetColumnWidth($tabela, 1, 180)
-	_GUICtrlListView_SetColumnWidth($tabela, 2, 50)
-	_GUICtrlListView_SetColumnWidth($tabela, 3, 100)
+	Global $tabela_metas = GUICtrlCreateListView("ID | META | % | VALOR DO MÊS ", 170, 30, 380, 432, BitOR($LVS_REPORT, $LVS_SHOWSELALWAYS))
+	_GUICtrlListView_SetColumnWidth($tabela_metas, 0, 40)
+	_GUICtrlListView_SetColumnWidth($tabela_metas, 1, 180)
+	_GUICtrlListView_SetColumnWidth($tabela_metas, 2, 50)
+	_GUICtrlListView_SetColumnWidth($tabela_metas, 3, 100)
 
-	_GUICtrlListView_SetExtendedListViewStyle($tabela, BitOR($LVS_EX_GRIDLINES, $LVS_EX_FLATSB, $LVS_EX_FULLROWSELECT))
-	_GUICtrlListView_SetTextBkColor($tabela, 0xE0E0E0)
-	_GUICtrlListView_SetBkColor($tabela, 0xFFFFFF)
-	_GUICtrlListView_SetTextColor($tabela, 0x000000)
+	_GUICtrlListView_SetExtendedListViewStyle($tabela_metas, BitOR($LVS_EX_GRIDLINES, $LVS_EX_FLATSB, $LVS_EX_FULLROWSELECT))
+	_GUICtrlListView_SetTextBkColor($tabela_metas, 0xE0E0E0)
+	_GUICtrlListView_SetBkColor($tabela_metas, 0xFFFFFF)
+	_GUICtrlListView_SetTextColor($tabela_metas, 0x000000)
 
 	conecta_e_inicia_banco()
 	Local $aResult, $iRows, $aNames
 	Local $ler_tabela_metas = _SQLite_GetTableData2D($hDatabase, "SELECT metas.id, metas.nome, metas.porcentagem FROM metas;", $aResult, $iRows, $aNames)
 
 	For $i = 0 To $iRows -1
-		GUICtrlCreateListViewItem($aResult[$i][0] & "|" & $aResult[$i][1] & "|" & $aResult[$i][2] & "|" & "R$ " & $entradas_mes*($aResult[$i][2]/100) & "|", $tabela)
+		GUICtrlCreateListViewItem($aResult[$i][0] & "|" & $aResult[$i][1] & "|" & $aResult[$i][2] & "|" & "R$ " & $entradas_mes*($aResult[$i][2]/100) & "|", $tabela_metas)
 	Next
 
 	;~ Local $somar_total_de_saidas = _SQLite_GetTableData2D($hDatabase, "SELECT SUM(saidas.valor) FROM saidas;", $aResult, $iRows, $aNames)
@@ -252,6 +252,34 @@ Func gravar_investimentos()
         MsgBox($MB_ICONINFORMATION, "Sucesso", "Dados gravados com sucesso!")
     EndIf
 
+    ; Fecha a conexão com o banco de dados
+    desconecta_e_fecha_banco()
+EndFunc
+
+Func carregar_meta_para_edicao($meta_id)
+	conecta_e_inicia_banco()
+	Local $aResult, $iRows, $aNames
+	Local $ler_tabela_metas = _SQLite_GetTableData2D($hDatabase, "SELECT metas.id, metas.nome, metas.porcentagem FROM metas where metas.id = " & $meta_id & ";", $aResult, $iRows, $aNames)
+
+	Local $resultado = [$aResult[0][0] , $aResult[0][1] , $aResult[0][2]]
+	desconecta_e_fecha_banco()
+	Return($resultado)
+EndFunc
+
+Func salvar_edicao_meta($id, $nome, $porcentagem)
+	conecta_e_inicia_banco()
+	$porcentagem = StringReplace($porcentagem, ",", ".")
+	Local $aResult, $iRows, $aNames
+
+    ; Cria a consulta SQL para inserção de dados
+    $sSQL = "UPDATE metas SET nome = '" & $nome & "', porcentagem = '" & $porcentagem & "' WHERE id = " & $id & ";"
+    ; Executa a consulta
+    _SQLite_Exec($hDatabase, $sSQL)
+    If @error Then
+        MsgBox($MB_ICONERROR, "Erro", "Erro ao inserir dados na tabela.")
+    Else
+        MsgBox($MB_ICONINFORMATION, "Sucesso", "Dados gravados com sucesso!")
+    EndIf
     ; Fecha a conexão com o banco de dados
     desconecta_e_fecha_banco()
 EndFunc
