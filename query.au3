@@ -166,7 +166,7 @@ Func consultar_entradas_mes()
 	conecta_e_inicia_banco()
 
 	Local $entradas_mes = _SQLite_GetTableData2D($hDatabase, "SELECT sum(e.valor) from entradas e where substr(data, 4, 2) = '"& @MON &"' AND substr(data, 7, 4) = '"& @YEAR &"';", $aResult, $iRows, $aNames)
-	Local $btn_entradas_mes = GUICtrlCreateLabel("Total: " & $aResult[0][0], 660, 20, 120, 20)
+	Local $lb_entradas_mes = GUICtrlCreateLabel("Total: " & $aResult[0][0], 660, 20, 120, 20)
 	GUICtrlSetFont(-1, 12, 700)
 
 	desconecta_e_fecha_banco()
@@ -216,6 +216,16 @@ Func exibir_metas_grid()
 	;~ Local $somar_total_de_saidas = _SQLite_GetTableData2D($hDatabase, "SELECT SUM(saidas.valor) FROM saidas;", $aResult, $iRows, $aNames)
 	;~ Local $label_valor_total_saidas = GUICtrlCreateLabel("Total: " & $aResult[0][0], 160, 470, 200, 20)
 	;~ GUICtrlSetFont(-1, 12, 700)
+
+	; Validação caso metas ultrapassem 100%
+	Local $soma_porcentagem_metas = "select sum(porcentagem) from metas where desativada is NULL;"
+
+	Local $porcentagem_total = _SQLite_GetTableData2D($hDatabase, "select sum(porcentagem) from metas where desativada is NULL;", $aResult, $iRows, $aNames)
+	If $aResult[0][0] > 100 Then
+		Local $lb_porcentagem_metas = GUICtrlCreateLabel("Soma da porcentagem das metas acima de 100%, revise os valores!!", 170, 10, 390, 20)
+		GUICtrlSetColor(-1, 0xFF0000)
+		GUICtrlSetFont(-1, 9, 700)
+	EndIf
 
 	desconecta_e_fecha_banco()
 EndFunc

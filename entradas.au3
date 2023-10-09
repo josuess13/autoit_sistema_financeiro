@@ -49,7 +49,9 @@ Func entradas()
                 GUISetState(@SW_ENABLE, $tela_entradas)
                 WinActivate($tela_entradas)
 			Case $btn_Atualizar_receitas
-				exibir_entradas_grid()
+				GUIDelete($tela_entradas)
+				entradas()
+				ExitLoop
 		EndSwitch
 	WEnd
 EndFunc

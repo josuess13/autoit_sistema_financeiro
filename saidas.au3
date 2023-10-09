@@ -48,7 +48,9 @@ Func saidas()
                 GUISetState(@SW_ENABLE, $tela_saidas)
                 WinActivate($tela_saidas)
 			Case $btn_Atualizar_despesas
-				exibir_saidas_grid()
+				GUIDelete($tela_saidas)
+				saidas()
+				ExitLoop
 		EndSwitch
 	WEnd
 EndFunc

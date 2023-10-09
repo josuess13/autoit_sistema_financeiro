@@ -28,6 +28,7 @@ Func investimentos()
 		Switch GUIGetMsg()
 			Case $GUI_EVENT_CLOSE
 				GUIDelete($tela_investimentos)
+				GUISetState(@SW_ENABLE, $tela_inicial)
 				ExitLoop
 			Case $adicionar_metas
 				GUISetState(@SW_DISABLE, $tela_investimentos)
@@ -35,7 +36,9 @@ Func investimentos()
                 GUISetState(@SW_ENABLE, $tela_investimentos)
                 WinActivate($tela_investimentos)
 			Case $btn_atualizar_investimentos
-				exibir_metas_grid()
+				GUIDelete($tela_investimentos)
+				investimentos()
+				ExitLoop
 			Case $btn_gravar_metas
 				gravar_investimentos()
 			Case $editar_metas
@@ -81,6 +84,8 @@ Func adicionar_metas()
 	GUICtrlSetFont(-1, 14, 700)
 	GUICtrlSetBkColor(-1, 0xF9FAFF)
 
+	GUIRegisterMsg($WM_COMMAND, "permite_inserir_numeros_e_virgula_metas")
+
 	While 1
 		switch GUIGetMsg()
 			case $GUI_EVENT_CLOSE, $btn_sair
@@ -89,12 +94,47 @@ Func adicionar_metas()
 			Case $btn_salvar
 				Local $valor_nome_meta = ControlGetText($tela_cadastro_metas, "", $descricao_meta)
 				Local $valor_porcentagem_meta = ControlGetText($tela_cadastro_metas, "", $porcentagem_meta)
-				adicionar_meta($valor_nome_meta, $valor_porcentagem_meta)
-				GUIDelete($tela_cadastro_metas)
-				ExitLoop
+				If valida_campos_vazios_metas() == 0 Then
+					adicionar_meta($valor_nome_meta, $valor_porcentagem_meta)
+					GUIDelete($tela_cadastro_metas)
+					ExitLoop
+				EndIf
 		endswitch
 	WEnd
+EndFunc
 
+Func permite_inserir_numeros_e_virgula_metas($hWnd, $iMsg, $iwParam, $ilParam)
+    Local $iCode = BitShift($iwParam, 16)
+    Local $iIDFrom = BitAND($iwParam, 0xFFFF)
+
+    If $iIDFrom = $porcentagem_meta And $iCode = $EN_CHANGE Then
+        Local $content = GUICtrlRead($porcentagem_meta)
+
+        If Not StringRegExp($content, '^[0-9]{0,7}(?:,[0-9]{0,2})?$') Then
+            $content = StringRegExpReplace($content, '[^0-9,]*', "")
+        EndIf
+
+        GUICtrlSetData($porcentagem_meta, $content)
+    EndIf
+    Return $GUI_RUNDEFMSG
+EndFunc
+
+Func valida_campos_vazios_metas()
+	Local $validacao_entrada = 0
+	Local $leitura_descricao = ControlGetText($tela_cadastro_metas, "", $descricao_meta)
+	Local $leitura_valor = ControlGetText($tela_cadastro_metas, "", $porcentagem_meta)
+
+	If $leitura_descricao == "" Then
+		MsgBox(0, "Aviso", "Insira a descrição")
+		ControlFocus($tela_cadastro_metas, "", $descricao_meta)
+		$validacao_entrada = 1
+	ElseIf $leitura_valor == "" Or $leitura_valor == 0 Then
+		MsgBox(0, "Aviso", "Insira o valor")
+		ControlFocus($tela_cadastro_metas, "", $porcentagem_meta)
+		$validacao_entrada = 1
+	EndIf
+
+	Return($validacao_entrada)
 EndFunc
 
 Func editar_metas()
