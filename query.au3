@@ -207,7 +207,7 @@ Func exibir_metas_grid()
 
 	conecta_e_inicia_banco()
 	Local $aResult, $iRows, $aNames
-	Local $ler_tabela_metas = _SQLite_GetTableData2D($hDatabase, "SELECT metas.id, metas.nome, metas.porcentagem FROM metas;", $aResult, $iRows, $aNames)
+	Local $ler_tabela_metas = _SQLite_GetTableData2D($hDatabase, "SELECT metas.id, metas.nome, metas.porcentagem FROM metas where metas.desativada is null;", $aResult, $iRows, $aNames)
 
 	For $i = 0 To $iRows -1
 		GUICtrlCreateListViewItem($aResult[$i][0] & "|" & $aResult[$i][1] & "|" & $aResult[$i][2] & "|" & "R$ " & $entradas_mes*($aResult[$i][2]/100) & "|", $tabela_metas)
@@ -224,7 +224,7 @@ Func gravar_investimentos()
 	Local $entradas_mes = consultar_entradas_mes()
 	conecta_e_inicia_banco()
 
-	Local $sSQL = "SELECT metas.id, metas.porcentagem FROM metas;"
+	Local $sSQL = "SELECT metas.id, metas.porcentagem FROM metas where metas.desativada is null;"
 	Local $aResult, $iRows, $iCols
 	Local $aResult1, $iRows1, $iCols1
 	If _SQLite_GetTable2d($hDatabase, $sSQL, $aResult, $iRows, $iCols) = $SQLITE_OK Then
@@ -282,4 +282,17 @@ Func salvar_edicao_meta($id, $nome, $porcentagem)
     EndIf
     ; Fecha a conexão com o banco de dados
     desconecta_e_fecha_banco()
+EndFunc
+
+Func desativar_meta($id)
+	conecta_e_inicia_banco()
+	Local $aResult, $iRows, $aNames
+	$sSQL = "UPDATE metas SET desativada = -1 WHERE id = " & $id & ";"
+	_SQLite_Exec($hDatabase, $sSQL)
+	If @error Then
+        MsgBox($MB_ICONERROR, "Erro", "Erro ao Excluir Meta.")
+    Else
+        MsgBox($MB_ICONINFORMATION, "Sucesso", "Meta Excluída com sucesso!")
+    EndIf
+	desconecta_e_fecha_banco()
 EndFunc

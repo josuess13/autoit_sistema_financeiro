@@ -4,13 +4,13 @@ Func investimentos()
     GUISetIcon("icones\invest.ico")
     GUISetState()
 
-	Local $adicionar_metas = GUICtrlCreateButton("Adicionar Metas", 20, 30, 130, 40)
+	Local $adicionar_metas = GUICtrlCreateButton("Adicionar Meta", 20, 30, 130, 40)
 	GUICtrlSetFont(-1, 13, 700)
 
-	Local $editar_metas = GUICtrlCreateButton("Editar Metas", 20, 80, 130, 40)
+	Local $editar_metas = GUICtrlCreateButton("Editar Meta", 20, 80, 130, 40)
 	GUICtrlSetFont(-1, 13, 700)
 
-	Local $btn_investimentos_total = GUICtrlCreateButton("Inv. Total", 20, 130, 130, 40)
+	Local $btn_excluir_meta = GUICtrlCreateButton("Excluir Meta", 20, 130, 130, 40)
 	GUICtrlSetFont(-1, 13, 700)
 
 	Local $btn_atualizar_investimentos = GUICtrlCreateButton("Atualizar", 20, 470, 130, 40)
@@ -43,6 +43,8 @@ Func investimentos()
 				editar_metas()
 				GUISetState(@SW_ENABLE, $tela_investimentos)
                 WinActivate($tela_investimentos)
+			Case $btn_excluir_meta
+				excluir_meta()
 		EndSwitch
 	WEnd
 EndFunc
@@ -157,4 +159,18 @@ Func editar_metas()
 				ExitLoop
 		endswitch
 	WEnd
+EndFunc
+
+Func excluir_meta()
+	Local $Index = _GUICtrlListView_GetSelectedIndices($tabela_metas)
+	$Index = $Index * 1
+
+    If $Index == "" Then
+        MsgBox(16, "Nenhum item selecionado", "Por favor, selecione um item na lista.")
+		Return
+    EndIf
+
+    Local $ItemText = _GUICtrlListView_GetItemText($tabela_metas, $Index)
+	Local $escolha = MsgBox(36, "Aviso!", "Deseja excluir a Meta " & $ItemText & "?")
+	If $escolha == $IDYES Then desativar_meta($ItemText)
 EndFunc
