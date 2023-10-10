@@ -16,7 +16,14 @@ Func investimentos()
 	Local $btn_atualizar_investimentos = GUICtrlCreateButton("Atualizar", 20, 470, 130, 40)
 	GUICtrlSetFont(-1, 13, 700)
 
-	Local $btn_gravar_metas = GUICtrlCreateButton("Gravar", 660, 470, 120, 40)
+	Local $btn_gravar_metas = GUICtrlCreateButton("Gravar", 20, 420, 130, 40)
+	GUICtrlSetFont(-1, 13, 700)
+	GUICtrlSetBkColor(-1, 0x2E8B57)
+
+	Local $btn_abrir_receitas = GUICtrlCreateButton("Receitas", 590, 150, 130, 40)
+	GUICtrlSetFont(-1, 13, 700)
+
+	Local $btn_abrir_despesas = GUICtrlCreateButton("Despesas", 590, 200, 130, 40)
 	GUICtrlSetFont(-1, 13, 700)
 
 	$entrada_mes = consultar_entradas_mes()
@@ -48,6 +55,16 @@ Func investimentos()
                 WinActivate($tela_investimentos)
 			Case $btn_excluir_meta
 				excluir_meta()
+			Case $btn_abrir_receitas
+				GUISetState(@SW_DISABLE, $tela_investimentos)
+                entradas()
+                GUISetState(@SW_ENABLE, $tela_investimentos)
+                WinActivate($tela_investimentos)
+			Case $btn_abrir_despesas
+				GUISetState(@SW_DISABLE, $tela_investimentos)
+                saidas()
+                GUISetState(@SW_ENABLE, $tela_investimentos)
+                WinActivate($tela_investimentos)
 		EndSwitch
 	WEnd
 EndFunc
