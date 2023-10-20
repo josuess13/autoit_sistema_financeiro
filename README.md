@@ -10,4 +10,10 @@ https://www.autoitscript.com/autoit3/pkgmgr/sqlite/
 * **Exibição do usuário logado.**
 * **Gravação das entradas e saídas no Banco de Dados.**
 * **Exibição das entradas e saídasnas respectivas telas.**
-* **Botão para atualizar as entradas e saídasnas e um totalizador.**
+* **Botão para atualizar as entradas e saídas e um totalizador.**
+
+## Versão 2.0
+* **Criação da tela de Investimentos.**
+* **Opção de adicionar, editar e excluir metas.**
+* **Gravação dos valores das metas.**
+* **Totalizadores de valores de metas.**
