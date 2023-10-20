@@ -342,3 +342,20 @@ Func desativar_meta($id)
     EndIf
 	desconecta_e_fecha_banco()
 EndFunc
+
+Func excluir_investidos()
+	conecta_e_inicia_banco()
+	Local $escolha = MsgBox(36, "Aviso!", "Deseja excluir os investimentos feitos no mês?")
+	If $escolha == $IDYES Then 
+		$sSQL = 'DELETE FROM investidos WHERE data ="' & @MON & @YEAR & '";'
+		;~ ConsoleWrite($sSQL)
+		;~ MsgBox(0, "", $sSQL)
+		_SQLite_Exec($hDatabase, $sSQL)
+		If @error Then
+			MsgBox($MB_ICONERROR, "Erro", "Erro ao Excluir investidos.")
+		Else
+			MsgBox($MB_ICONINFORMATION, "Sucesso", "Investidos Excluídos com sucesso!")
+		EndIf
+	EndIf
+	desconecta_e_fecha_banco()
+EndFunc

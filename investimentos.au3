@@ -13,6 +13,9 @@ Func investimentos()
 	Local $btn_excluir_meta = GUICtrlCreateButton("Excluir Meta", 20, 130, 130, 40)
 	GUICtrlSetFont(-1, 13, 700)
 
+	Local $btn_excluir_investidos = GUICtrlCreateButton("Excluir Invest.", 20, 180, 130, 40)
+	GUICtrlSetFont(-1, 13, 700)
+
 	Local $btn_atualizar_investimentos = GUICtrlCreateButton("Atualizar", 20, 470, 130, 40)
 	GUICtrlSetFont(-1, 13, 700)
 
@@ -42,19 +45,31 @@ Func investimentos()
                 adicionar_metas()
                 GUISetState(@SW_ENABLE, $tela_investimentos)
                 WinActivate($tela_investimentos)
+				GUIDelete($tela_investimentos)
+				investimentos()
+				ExitLoop
 			Case $btn_atualizar_investimentos
 				GUIDelete($tela_investimentos)
 				investimentos()
 				ExitLoop
 			Case $btn_gravar_metas
 				gravar_investimentos()
+				GUIDelete($tela_investimentos)
+				investimentos()
+				ExitLoop
 			Case $editar_metas
 				GUISetState(@SW_DISABLE, $tela_investimentos)
 				editar_metas()
 				GUISetState(@SW_ENABLE, $tela_investimentos)
                 WinActivate($tela_investimentos)
+				GUIDelete($tela_investimentos)
+				investimentos()
+				ExitLoop
 			Case $btn_excluir_meta
 				excluir_meta()
+				GUIDelete($tela_investimentos)
+				investimentos()
+				ExitLoop
 			Case $btn_abrir_receitas
 				GUISetState(@SW_DISABLE, $tela_investimentos)
                 entradas()
@@ -65,6 +80,11 @@ Func investimentos()
                 saidas()
                 GUISetState(@SW_ENABLE, $tela_investimentos)
                 WinActivate($tela_investimentos)
+			Case $btn_excluir_investidos
+				excluir_investidos()
+				GUIDelete($tela_investimentos)
+				investimentos()
+				ExitLoop
 		EndSwitch
 	WEnd
 EndFunc
