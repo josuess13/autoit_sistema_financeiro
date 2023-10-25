@@ -3,37 +3,45 @@ Func saidas()
     Local $tela_saidas = GUICreate("Despesas", 800, 520)
     GUISetIcon("icones\saidas.ico")
     GUISetState()
-    ; Botão Adicionar
-    Local $btn_adicionar = GUICtrlCreateButton("Adicionar +", 20, 30, 120, 40)
-	GUICtrlSetFont($btn_adicionar, 13, 700)
-    ; Data
-    Local $datas_mes_ano = GUICtrlCreateLabel(_DateToMonth(@MON, $DMW_LOCALE_LONGNAME) & "/" & @YEAR, 20, 100, 120, 40, $SS_CENTER)
+    ; Label Data
+    Local $datas_mes_ano = GUICtrlCreateLabel(_DateToMonth(@MON, $DMW_LOCALE_LONGNAME) & "/" & @YEAR, 20, 30, 120, 40, $SS_CENTER)
 	GUICtrlSetFont($datas_mes_ano, 13, 700)
 	GUICtrlSetColor($datas_mes_ano, 0x8B0000)
-
-	; Botão Saídas mês
-	Local $btn_saidas_mes = GUICtrlCreateButton("Gastos no mês", 20, 150, 120, 40)
-	GUICtrlSetFont(-1, 9, 700)
-	; Botão entradas no ano
-	Local $btn_entradas_ano = GUICtrlCreateButton("Despesas no ano", 20, 200, 120, 40)
+	; Botão Adicionar
+    Local $btn_adicionar = GUICtrlCreateButton("Adicionar +", 20, 60, 120, 40)
+	GUICtrlSetFont($btn_adicionar, 13, 700)
+	; Excluir Saída
+	Local $btn_excluir_saida = GUICtrlCreateButton("Excluir", 20, 110, 120, 40)
 	GUICtrlSetFont(-1, 9, 700)
 	; Filtrar datas
-	Local $filtrar_datas_entre = GUICtrlCreateLabel("Mostrar gastos entre:", 20, 250, 120, 40, $SS_CENTER)
+	Local $filtrar_datas_entre = GUICtrlCreateLabel("Mostrar gastos entre:", 20, 160, 120, 40, $SS_CENTER)
 	GUICtrlSetFont($filtrar_datas_entre, 9, 700)
-	Local $data_inicio = GUICtrlCreateDate("", 20, 290, 120, 20, $DTS_SHORTDATEFORMAT)
-	GUICtrlCreateLabel("e:", 20, 310, 120, -1, $SS_CENTER)
+	Local $data_inicio = GUICtrlCreateDate("", 20, 200, 120, 20, $DTS_SHORTDATEFORMAT)
+	GUICtrlCreateLabel("e:", 20, 220, 120, -1, $SS_CENTER)
 	GUICtrlSetFont(-1, 9, 700)
-	Local $data_fim = GUICtrlCreateDate("", 20, 330, 120, 20, $DTS_SHORTDATEFORMAT)
-	Local $btn_filtrar = GUICtrlCreateButton("Filtrar", 20, 360, 120, 40)
+	Local $data_fim = GUICtrlCreateDate("", 20, 240, 120, 20, $DTS_SHORTDATEFORMAT)
+	Local $btn_filtrar = GUICtrlCreateButton("Filtrar", 20, 270, 120, 40)
 	GUICtrlSetFont(-1, 9, 700)
-	Local $limpar_filtros = GUICtrlCreateButton("Limpar Filtros", 20, 425, 120, 40)
+	; Para gastar
+	GUICtrlCreateLabel("Para gastar:", 20, 320, 120, -1, $SS_CENTER)
 	GUICtrlSetFont(-1, 9, 700)
+	Local $para_gastar = calcula_saldo_saidas()[1]
+	GUICtrlCreateLabel("R$ " & $para_gastar, 20, 345, 120, -1, $SS_CENTER)
+	GUICtrlSetFont(-1, 12, 700)
+	; Total de despesas
+	Local $t_despesas = calcula_saldo_saidas()[0]
+	Local $label_valor_total_saidas = GUICtrlCreateLabel("Total Despesas: " & $t_despesas, 160, 470, 200, 20)
+	GUICtrlSetFont(-1, 12, 700)
+	; Saldo para gastar
+	GUICtrlCreateLabel("Saldo:", 20, 370, 120, -1, $SS_CENTER)
+	GUICtrlSetFont(-1, 9, 700)
+	Local $saldo_s = calcula_saldo_saidas()[1] - calcula_saldo_saidas()[0]
+	GUICtrlCreateLabel("R$ " & $saldo_s, 20, 395, 120, -1, $SS_CENTER)
+	GUICtrlSetFont(-1, 12, 700)
+
 
 	Local $btn_Atualizar_despesas = GUICtrlCreateButton("Atualizar", 20, 470, 120, 40)
 	GUICtrlSetFont(-1, 9, 700)
-
-	Local $label_valor_total_entradas = GUICtrlCreateLabel("Total:", 160, 470, 200, 20)
-	GUICtrlSetFont(-1, 12, 700)
 
 	exibir_saidas_grid()
 
@@ -45,12 +53,23 @@ Func saidas()
 			Case $btn_adicionar
 				GUISetState(@SW_DISABLE, $tela_saidas)
                 adicionar_despesas()
-                GUISetState(@SW_ENABLE, $tela_saidas)
-                WinActivate($tela_saidas)
+                GUIDelete($tela_saidas)
+				saidas()
+				ExitLoop
 			Case $btn_Atualizar_despesas
 				GUIDelete($tela_saidas)
 				saidas()
 				ExitLoop
+			Case $btn_excluir_saida
+				excluir_saida_selecionada()
+				GUIDelete($tela_saidas)
+				saidas()
+				ExitLoop
+			Case $btn_filtrar
+				GUISetState(@SW_DISABLE, $tela_saidas)
+				exibir_saidas_grid_filtrando_datas(ControlGetText($tela_saidas, "", $data_inicio), ControlGetText($tela_saidas, "", $data_fim))
+				GUISetState(@SW_ENABLE, $tela_saidas)
+				WinActivate($tela_saidas)
 		EndSwitch
 	WEnd
 EndFunc
@@ -212,4 +231,23 @@ Func limpar_dados_saida()
 	GUICtrlSetData($data_saida, @YEAR & "/" & @MON & "/" & @MDAY)
 	$observacao_saida = ""
 	ControlSetText("Adicionar Observação", "", $observacao_saida, "")
+EndFunc
+
+Func selecionar_item_grid_saidas()
+	Local $Index = _GUICtrlListView_GetSelectedIndices($tabela_saida)
+	$Index = $Index * 1
+
+	If $Index == "" Then
+		MsgBox(16, "Nenhum item selecionado", "Por favor, selecione um item na lista.")
+		Return
+	EndIf
+
+	Local $ItemText = _GUICtrlListView_GetItemText($tabela_saida, $Index)
+	Return $ItemText
+EndFunc
+
+Func excluir_saida_selecionada()
+	$ItemText = selecionar_item_grid_saidas()
+	Local $escolha = MsgBox(36, "Aviso!", "Deseja excluir gasto " & $ItemText & "?")
+	If $escolha == $IDYES Then excluir_saida($ItemText)
 EndFunc
