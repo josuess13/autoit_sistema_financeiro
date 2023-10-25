@@ -1,4 +1,5 @@
 Global $hDatabase
+;Global $tabela_saida, $tabela_entradas
 
 #include <Array.au3>
 #include <SQLite.au3>
@@ -18,15 +19,13 @@ Global $hDatabase
 
 #include <login.au3>
 #include <main.au3>
-#include <entradas.au3>
 #include <query.au3>
 #include <query_entradas.au3>
 #include <query_saidas.au3>
 #include <query_investimentos.au3>
 #include <investimentos.au3>
 #include <saidas.au3>
-
-
+#include <entradas.au3>
 
 
 

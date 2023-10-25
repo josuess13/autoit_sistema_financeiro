@@ -4,7 +4,7 @@ Func saidas()
     GUISetIcon("icones\saidas.ico")
     GUISetState()
     ; Label Data
-    Local $datas_mes_ano = GUICtrlCreateLabel(_DateToMonth(@MON, $DMW_LOCALE_LONGNAME) & "/" & @YEAR, 20, 30, 120, 40, $SS_CENTER)
+    Local $datas_mes_ano = GUICtrlCreateLabel(_DateToMonth(@MON, $DMW_LOCALE_LONGNAME) & "/" & @YEAR, 10, 30, 140, 30, $SS_CENTER)
 	GUICtrlSetFont($datas_mes_ano, 13, 700)
 	GUICtrlSetColor($datas_mes_ano, 0x8B0000)
 	; Botão Adicionar
