@@ -43,6 +43,9 @@ Func saidas()
 	Local $btn_Atualizar_despesas = GUICtrlCreateButton("Atualizar", 20, 470, 120, 40)
 	GUICtrlSetFont(-1, 9, 700)
 
+	Local $btn_gastos_fixos = GUICtrlCreateButton("Gastos Fixos", 660, 470, 120, 40)
+	GUICtrlSetFont(-1, 9, 700)
+
 	exibir_saidas_grid()
 
     While 1
@@ -70,6 +73,12 @@ Func saidas()
 				exibir_saidas_grid_filtrando_datas(ControlGetText($tela_saidas, "", $data_inicio), ControlGetText($tela_saidas, "", $data_fim))
 				GUISetState(@SW_ENABLE, $tela_saidas)
 				WinActivate($tela_saidas)
+			Case $btn_gastos_fixos
+				GUISetState(@SW_DISABLE, $tela_saidas)
+				gastos_fixos()
+				GUIDelete($tela_saidas)
+				saidas()
+				ExitLoop
 		EndSwitch
 	WEnd
 EndFunc

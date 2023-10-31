@@ -1,3 +1,3 @@
 #include <includes.au3>
-;entradas()
-login()
+gastos_fixos()
+;login()

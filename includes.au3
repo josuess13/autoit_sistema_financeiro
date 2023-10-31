@@ -23,9 +23,11 @@ Global $hDatabase
 #include <query_entradas.au3>
 #include <query_saidas.au3>
 #include <query_investimentos.au3>
+#include <query_gastos_fixos.au3> 
 #include <investimentos.au3>
 #include <saidas.au3>
 #include <entradas.au3>
+#include <gastos_fixos.au3>
 
 
 
