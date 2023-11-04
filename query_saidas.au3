@@ -87,7 +87,7 @@ Func exibir_saidas_grid_filtrando_datas($inicio, $fim)
 	$consulta = "SELECT SUM(saidas.valor) FROM saidas WHERE substr(data, 7, 4) || '-' || substr(data, 4, 2) || '-' || substr(data, 1, 2)"
 	$consulta = $consulta & " BETWEEN '" & $ano_inicio &'-'& $mes_inicio &'-'& $dia_inicio &"' AND '"& $ano_fim &'-'& $mes_fim &'-'& $dia_fim &"';"
 	Local $somar_total_de_saidas = _SQLite_GetTableData2D($hDatabase, $consulta, $aResult, $iRows, $aNames)
-	Local $label_valor_total_saidas = GUICtrlCreateLabel("Total: " & $aResult[0][0], 160, 470, 200, 20)
+	Local $label_valor_total_saidas = GUICtrlCreateLabel("Total Despesas: R$ " & $aResult[0][0], 160, 470, 200, 20)
 	GUICtrlSetFont(-1, 12, 700)
 
 	desconecta_e_fecha_banco()

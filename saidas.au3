@@ -30,7 +30,7 @@ Func saidas()
 	GUICtrlSetFont(-1, 12, 700)
 	; Total de despesas
 	Local $t_despesas = calcula_saldo_saidas()[0]
-	Local $label_valor_total_saidas = GUICtrlCreateLabel("Total Despesas: " & $t_despesas, 160, 470, 200, 20)
+	Local $label_valor_total_saidas = GUICtrlCreateLabel("Total Despesas: R$ " & $t_despesas, 160, 470, 250, 20)
 	GUICtrlSetFont(-1, 12, 700)
 	; Saldo para gastar
 	GUICtrlCreateLabel("Saldo:", 20, 370, 120, -1, $SS_CENTER)
@@ -38,7 +38,10 @@ Func saidas()
 	Local $saldo_s = calcula_saldo_saidas()[1] - calcula_saldo_saidas()[0]
 	GUICtrlCreateLabel("R$ " & $saldo_s, 20, 395, 120, -1, $SS_CENTER)
 	GUICtrlSetFont(-1, 12, 700)
-
+	; Gasto Fixo
+	Local $gastos_fixos = soma_gastos_fixos()
+	GUICtrlCreateLabel("Gastos Fixos: R$ " & $gastos_fixos, 411, 470, 250, 20)
+	GUICtrlSetFont(-1, 12, 700)
 
 	Local $btn_Atualizar_despesas = GUICtrlCreateButton("Atualizar", 20, 470, 120, 40)
 	GUICtrlSetFont(-1, 9, 700)
