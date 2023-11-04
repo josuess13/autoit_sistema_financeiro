@@ -1,1 +1,1 @@
-MsgBox(0, "", @MDAY)
+MsgBox(0, @MON, @YEAR)

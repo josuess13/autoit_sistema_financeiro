@@ -16,42 +16,42 @@ Func consultar_entradas_mes()
 	Local $entradas_mes = _SQLite_GetTableData2D($hDatabase, "SELECT sum(e.valor) from entradas e where substr(data, 4, 2) = '"& @MON &"' AND substr(data, 7, 4) = '"& @YEAR &"';", $aResult, $iRows, $aNames)
 	$entradas_mes = $aResult[0][0]
 	Local $lb_entradas_mes = GUICtrlCreateLabel("Entradas no Mês: R$ " & $entradas_mes, 560, 30, 220, 60)
-	GUICtrlSetFont(-1, 12, 700)
+	GUICtrlSetFont(-1, 10, 700)
 	; Total para investir
 	Local $lb_total_p_investir = GUICtrlCreateLabel("Total p/ Investir: R$ " & $entradas_mes * $porcentagem_p_investir, 560, 50, 220, 60)
-	GUICtrlSetFont(-1, 12, 700)
+	GUICtrlSetFont(-1, 10, 700)
 	; Valor investido
 	Local $investido = _SQLite_GetTableData2D($hDatabase, "select sum(valor) from investidos where data = " & @MON & @YEAR, $aResult, $iRows, $aNames)
 	$investido = $aResult[0][0]
 	Local $lb_percentual_investido = GUICtrlCreateLabel("Total investido: R$" & $investido, 560, 70, 220, 60)
-	GUICtrlSetFont(-1, 12, 700)
+	GUICtrlSetFont(-1, 10, 700)
 	If $investido <> $entradas_mes * $porcentagem_p_investir Then
 		GUICtrlSetColor(-1, 0xFF0000)
 	EndIf
 	; Percentual investido
 	Local $lb_percentual_investido = GUICtrlCreateLabel("Percentual investido: " & $percentual & "%", 560, 90, 220, 60)
-	GUICtrlSetFont(-1, 12, 700)
+	GUICtrlSetFont(-1, 10, 700)
 	; Botões XXX
 	; Entradas Ano
 	Local $entradas_ano = _SQLite_GetTableData2D($hDatabase, "select sum(valor) from entradas WHERE SUBSTR(data, -4) = '" & @YEAR & "'", $aResult, $iRows, $aNames)
 	$entradas_ano = $aResult[0][0]
 	GUICtrlCreateLabel("Entradas Ano: R$" & $entradas_ano, 560, 340, 220, 60)
-	GUICtrlSetFont(-1, 12, 700)
+	GUICtrlSetFont(-1, 10, 700)
 	; Investido Ano
 	Local $investido_ano = _SQLite_GetTableData2D($hDatabase, "select sum(valor) from investidos WHERE SUBSTR(data, -4) = '" & @YEAR & "'", $aResult, $iRows, $aNames)
 	$investido_ano = $aResult[0][0]
 	GUICtrlCreateLabel("Investido no Ano: R$" & $investido_ano, 560, 360, 220, 60)
-	GUICtrlSetFont(-1, 12, 700)
+	GUICtrlSetFont(-1, 10, 700)
 	; Entradas Total
 	Local $entradas_total = _SQLite_GetTableData2D($hDatabase, "select sum(valor) from entradas;", $aResult, $iRows, $aNames)
 	$entradas_total = $aResult[0][0]
 	GUICtrlCreateLabel("Entradas Total: R$" & $entradas_total, 560, 400, 220, 60)
-	GUICtrlSetFont(-1, 12, 700)
+	GUICtrlSetFont(-1, 10, 700)
 	; Investido total
 	Local $investidos_total = _SQLite_GetTableData2D($hDatabase, "select sum(valor) from investidos;", $aResult, $iRows, $aNames)
 	$investidos_total = $aResult[0][0]
 	GUICtrlCreateLabel("Investidos Total: R$" & $investidos_total, 560, 420, 220, 60)
-	GUICtrlSetFont(-1, 12, 700)
+	GUICtrlSetFont(-1, 10, 700)
 
 	desconecta_e_fecha_banco()
 	Return $entradas_mes
