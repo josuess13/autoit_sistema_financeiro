@@ -103,9 +103,15 @@ Func calcula_saldo_entradas()
 	conecta_e_inicia_banco()
 	Local $aResult, $iRows, $aNames
 
-	Local $sql = "select ((select sum(porcentagem) from metas where desativada is NULL) /100) * "
-	$sql = $sql & "(select sum(e.valor) from entradas e where substr(data, 4, 2) = '"& @MON &"' AND substr(data, 7, 4) = '"& @YEAR &"')" 
-	Local $para_investir = _SQLite_GetTableData2D($hDatabase, $sql, $aResult, $iRows, $aNames)
+	Local $sql_porcentagem = "select (select sum(porcentagem) from metas where desativada is NULL) as p"
+	Local $sql_valor_entrada = "select (select sum(valor) from entradas where substr(data, 4, 2) = '" & @MON & "' AND substr(data, 7, 4) = '" & @YEAR & "') as para_gastar"
+
+	$sql_porcentagem = _SQLite_GetTableData2D($hDatabase, $sql_porcentagem, $aResult, $iRows, $aNames)
+	$sql_porcentagem = $aResult[0][0] / 100
+
+	$sql_valor_entrada = _SQLite_GetTableData2D($hDatabase, $sql_valor_entrada, $aResult, $iRows, $aNames)
+	$sql_valor_entrada = $aResult[0][0] * $sql_porcentagem
+
 	desconecta_e_fecha_banco()
-	Return($aResult[0][0])
+	Return($sql_valor_entrada)
 EndFunc

@@ -21,7 +21,7 @@ Func exibir_gastos_fixos_grid()
 	Next
 
 	Local $somar_total_gf = _SQLite_GetTableData2D($hDatabase, "SELECT SUM(valor) FROM gastos_fixos;", $aResult, $iRows, $aNames)
-	Local $label_valor_total_entradas = GUICtrlCreateLabel("Total Gastos Fixos: R$" & $aResult[0][0], 20, 440, 300, 20)
+	Local $label_valor_total_entradas = GUICtrlCreateLabel("Total Gastos Fixos: R$ " & $aResult[0][0], 20, 440, 300, 20)
 	GUICtrlSetFont(-1, 12, 700)
 
 	desconecta_e_fecha_banco()

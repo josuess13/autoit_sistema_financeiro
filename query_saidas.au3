@@ -101,10 +101,16 @@ Func calcula_saldo_saidas()
 	Local $retorno[2]
 	$retorno[0] = $aResult[0][0]
 	
-	Local $sql = "select (1 - ((select sum(porcentagem) from metas where desativada is NULL) / 100)) * "
-	$sql = $sql & "(select sum(valor) from entradas where substr(data, 4, 2) = '" & @MON & "' AND substr(data, 7, 4) = '" & @YEAR & "') as para_gastar" 
-	Local $para_gastar = _SQLite_GetTableData2D($hDatabase, $sql, $aResult, $iRows, $aNames)
-	$retorno[1] = $aResult[0][0]
+	Local $sql_porcentagem = "select (select sum(porcentagem) from metas where desativada is NULL) as p"
+	Local $sql_valor_entrada = "select (select sum(valor) from entradas where substr(data, 4, 2) = '" & @MON & "' AND substr(data, 7, 4) = '" & @YEAR & "') as para_gastar"
+
+	$sql_porcentagem = _SQLite_GetTableData2D($hDatabase, $sql_porcentagem, $aResult, $iRows, $aNames)
+	$sql_porcentagem = $aResult[0][0] / 100
+
+	$sql_valor_entrada = _SQLite_GetTableData2D($hDatabase, $sql_valor_entrada, $aResult, $iRows, $aNames)
+	$sql_valor_entrada = $aResult[0][0] * $sql_porcentagem
+	$retorno[1] = $sql_valor_entrada
+
 	desconecta_e_fecha_banco()
 	Return($retorno)
 EndFunc
