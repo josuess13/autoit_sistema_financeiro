@@ -30,7 +30,7 @@ Func entradas()
 	GUICtrlCreateLabel("Para investir:", 20, 320, 120, -1, $SS_CENTER)
 	GUICtrlSetFont(-1, 9, 700)
 	Local $para_investir = calcula_saldo_entradas()
-	GUICtrlCreateLabel("R$ " & $para_investir, 20, 345, 120, -1, $SS_CENTER)
+	GUICtrlCreateLabel("R$ " & Round($para_investir, 2), 20, 345, 120, -1, $SS_CENTER)
 	GUICtrlSetFont(-1, 12, 700)
 	; Saldo despesas
 	GUICtrlCreateLabel("Despesas:", 20, 370, 120, -1, $SS_CENTER)

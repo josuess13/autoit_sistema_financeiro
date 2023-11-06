@@ -18,12 +18,12 @@ Func consultar_entradas_mes()
 	Local $lb_entradas_mes = GUICtrlCreateLabel("Entradas no Mês: R$ " & $entradas_mes, 560, 30, 220, 60)
 	GUICtrlSetFont(-1, 10, 700)
 	; Total para investir
-	Local $lb_total_p_investir = GUICtrlCreateLabel("Total p/ Investir: R$ " & $entradas_mes * $porcentagem_p_investir, 560, 50, 220, 60)
+	Local $lb_total_p_investir = GUICtrlCreateLabel("Total p/ Investir: R$ " & Round($entradas_mes * $porcentagem_p_investir, 2), 560, 50, 220, 60)
 	GUICtrlSetFont(-1, 10, 700)
 	; Valor investido
 	Local $investido = _SQLite_GetTableData2D($hDatabase, "select sum(valor) from investidos where data = " & @MON & @YEAR, $aResult, $iRows, $aNames)
 	$investido = $aResult[0][0]
-	Local $lb_percentual_investido = GUICtrlCreateLabel("Total investido: R$" & $investido, 560, 70, 220, 60)
+	Local $lb_percentual_investido = GUICtrlCreateLabel("Total investido: R$ " & Round($investido, 2), 560, 70, 220, 60)
 	GUICtrlSetFont(-1, 10, 700)
 	If $investido <> $entradas_mes * $porcentagem_p_investir Then
 		GUICtrlSetColor(-1, 0xFF0000)
@@ -35,22 +35,22 @@ Func consultar_entradas_mes()
 	; Entradas Ano
 	Local $entradas_ano = _SQLite_GetTableData2D($hDatabase, "select sum(valor) from entradas WHERE SUBSTR(data, -4) = '" & @YEAR & "'", $aResult, $iRows, $aNames)
 	$entradas_ano = $aResult[0][0]
-	GUICtrlCreateLabel("Entradas Ano: R$" & $entradas_ano, 560, 340, 220, 60)
+	GUICtrlCreateLabel("Entradas Ano: R$ " & $entradas_ano, 560, 340, 220, 60)
 	GUICtrlSetFont(-1, 10, 700)
 	; Investido Ano
 	Local $investido_ano = _SQLite_GetTableData2D($hDatabase, "select sum(valor) from investidos WHERE SUBSTR(data, -4) = '" & @YEAR & "'", $aResult, $iRows, $aNames)
 	$investido_ano = $aResult[0][0]
-	GUICtrlCreateLabel("Investido no Ano: R$" & $investido_ano, 560, 360, 220, 60)
+	GUICtrlCreateLabel("Investido no Ano: R$ " & Round($investido_ano, 2), 560, 360, 220, 60)
 	GUICtrlSetFont(-1, 10, 700)
 	; Entradas Total
 	Local $entradas_total = _SQLite_GetTableData2D($hDatabase, "select sum(valor) from entradas;", $aResult, $iRows, $aNames)
 	$entradas_total = $aResult[0][0]
-	GUICtrlCreateLabel("Entradas Total: R$" & $entradas_total, 560, 400, 220, 60)
+	GUICtrlCreateLabel("Entradas Total: R$ " & $entradas_total, 560, 400, 220, 60)
 	GUICtrlSetFont(-1, 10, 700)
 	; Investido total
 	Local $investidos_total = _SQLite_GetTableData2D($hDatabase, "select sum(valor) from investidos;", $aResult, $iRows, $aNames)
 	$investidos_total = $aResult[0][0]
-	GUICtrlCreateLabel("Investidos Total: R$" & $investidos_total, 560, 420, 220, 60)
+	GUICtrlCreateLabel("Investidos Total: R$ " & Round($investidos_total, 2), 560, 420, 220, 60)
 	GUICtrlSetFont(-1, 10, 700)
 
 	desconecta_e_fecha_banco()
@@ -94,7 +94,7 @@ Func exibir_metas_grid()
 	Local $ler_tabela_metas = _SQLite_GetTableData2D($hDatabase, "SELECT metas.id, metas.nome, metas.porcentagem FROM metas where metas.desativada is null;", $aResult, $iRows, $aNames)
 
 	For $i = 0 To $iRows -1
-		GUICtrlCreateListViewItem($aResult[$i][0] & "|" & $aResult[$i][1] & "|" & $aResult[$i][2] & "|" & "R$ " & $entradas_mes*($aResult[$i][2]/100) & "|", $tabela_metas)
+		GUICtrlCreateListViewItem($aResult[$i][0] & "|" & $aResult[$i][1] & "|" & $aResult[$i][2] & "|" & "R$ " & Round($entradas_mes*($aResult[$i][2]/100), 2) & "|", $tabela_metas)
 	Next
 	desconecta_e_fecha_banco()
 EndFunc

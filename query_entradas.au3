@@ -42,7 +42,7 @@ Func exibir_entradas_grid()
 	Next
 
 	Local $somar_total_de_entradas = _SQLite_GetTableData2D($hDatabase, "SELECT SUM(entradas.valor) FROM entradas where substr(data, 4, 2) = '"& @MON &"' AND substr(data, 7, 4) = '"& @YEAR &"';", $aResult, $iRows, $aNames)
-	Local $label_valor_total_entradas = GUICtrlCreateLabel("Total Entradas: " & $aResult[0][0], 160, 470, 200, 20)
+	Local $label_valor_total_entradas = GUICtrlCreateLabel("Total Entradas: R$ " & $aResult[0][0], 160, 470, 300, 20)
 	GUICtrlSetFont(-1, 12, 700)
 
 	desconecta_e_fecha_banco()
@@ -93,7 +93,7 @@ Func exibir_entradas_grid_filtrando_datas($inicio, $fim)
 	Local $sql_total = "SELECT SUM(valor) FROM entradas WHERE substr(data, 7, 4) || '-' || substr(data, 4, 2) || '-' || substr(data, 1, 2)"
 	$sql_total = $sql_total & " BETWEEN '" & $ano_inicio &'-'& $mes_inicio &'-'& $dia_inicio &"' AND '"& $ano_fim &'-'& $mes_fim &'-'& $dia_fim &"';"
 	Local $somar_total_de_entradas = _SQLite_GetTableData2D($hDatabase, $sql_total, $aResult, $iRows, $aNames)
-	Local $label_valor_total_entradas = GUICtrlCreateLabel("Total Entradas: " & $aResult[0][0], 160, 470, 200, 20)
+	Local $label_valor_total_entradas = GUICtrlCreateLabel("Total Entradas: R$ " & $aResult[0][0], 160, 470, 300, 20)
 	GUICtrlSetFont(-1, 12, 700)
 
 	desconecta_e_fecha_banco()
